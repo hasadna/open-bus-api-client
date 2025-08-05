@@ -1,6 +1,7 @@
 {
   "name": "open-bus-api-client",
   "version": "1.0.0",
+  "type": "module",
   "description": "A client library for interacting with the Open-Bus API.",
   "homepage": "https://github.com/hasadna/open-bus-api-client#readme",
   "repository": "git@github.com:hasadna/open-bus-api-client.git",
@@ -14,14 +15,13 @@
     "openapi-generator"
   ],
   "scripts": {
-    "download:json": "curl -L https://open-bus-stride-api.hasadna.org.il/openapi.json -o openapi.json",
-    "generate:client": "openapi-generator-cli generate -g typescript-axios -i openapi.json -o ./client -c config.json",
-    "build:client": "node ./scripts/set-version.js && cd client && npm install && npm run build && cd ..",
-    "publish": "cd client && npm publish --access public --tag latest && cd ..",
-    "postpublish": "node ./scripts/postpublish-cleanup.js"
+    "download": "curl -L https://open-bus-stride-api.hasadna.org.il/openapi.json -o openapi.json",
+    "generate": "node scripts/generate.js",
+    "publish": "node scripts/publish.js"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.21.4",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "rimraf": "^6.0.1"
   }
 }

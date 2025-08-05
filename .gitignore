@@ -1,4 +1,17 @@
-node_modules
+# Build and dependency artifacts
+dist/
+node_modules/
+
+# OpenAPI generator artifacts
+client/.openapi-generator/
+client/package-lock.json
+client/.openapi-generator-ignore
+client/docs/
+client/git_push.sh
+
+# npm artifacts
+.npmrc
+.npmignore
+
+# Download files
 openapi.json
-git_push.sh
-dist

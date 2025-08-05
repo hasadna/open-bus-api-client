@@ -1,8 +1,9 @@
 {
   "name": "@hasadna/open-bus-api-client",
-  "version": "1.0.0-27215a2-20250805",
+  "version": "1.0.0-27215a2-20250806",
   "description": "A client library for interacting with the Open-Bus API.",
   "author": "hasadna",
+  "repository": "git@github.com:hasadna/open-bus-api-client.git",
   "keywords": [
     "axios",
     "api",
@@ -13,17 +14,16 @@
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "module": "./dist/esm/index.js",
-  "sideEffects": false,
   "scripts": {
-    "build": "tsc && tsc -p tsconfig.esm.json",
+    "build": "tsc",
     "prepare": "npm run build"
   },
   "dependencies": {
-    "axios": "^1.6.1"
+    "axios": "latest"
   },
   "devDependencies": {
     "@types/node": "12.11.5 - 12.20.42",
     "typescript": "^4.0 || ^5.0"
-  }
+  },
+  "homepage": "https://github.com/hasadna/open-bus-api-client#readme"
 }
