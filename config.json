@@ -3,6 +3,6 @@
   "licenseName": "MIT",
   "apiPackage": "api",
   "modelPackage": "models",
-  "axiosVersion": "latest",
+  "axiosVersion": "1.11.0",
   "withSeparateModelsAndApi": true
 }

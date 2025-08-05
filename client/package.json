@@ -19,7 +19,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "axios": "latest"
+    "axios": "1.11.0"
   },
   "devDependencies": {
     "@types/node": "12.11.5 - 12.20.42",
