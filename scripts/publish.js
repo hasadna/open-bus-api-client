@@ -46,14 +46,14 @@ writeFileSync(npmrcPath, npmrcContent);
 // Publish the package
 try {
   console.log("📦 Publishing npm package...");
-  // execSync("npm publish --access public --tag latest", {
-  //   cwd: clientDir,
-  //   stdio: "inherit",
-  //   env: {
-  //     ...process.env,
-  //     NODE_AUTH_TOKEN: process.env.NODE_AUTH_TOKEN,
-  //   },
-  // });
+  execSync("npm publish --access public --tag latest", {
+    cwd: clientDir,
+    stdio: "inherit",
+    env: {
+      ...process.env,
+      NODE_AUTH_TOKEN: process.env.NODE_AUTH_TOKEN,
+    },
+  });
 
   // Clean up
   console.log("🧹 Cleaning up...");
