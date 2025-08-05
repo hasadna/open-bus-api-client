@@ -1,0 +1,4 @@
+node_modules
+openapi.json
+git_push.sh
+dist

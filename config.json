@@ -1,0 +1,9 @@
+{
+  "npmName": "@hasadna/open-bus-api-client",
+  "licenseName": "MIT",
+  "apiPackage": "api",
+  "modelPackage": "models",
+  "npmRepository": "git+https://github.com/hasadna/open-bus-api-client.git",
+  "supportsES6": true,
+  "withSeparateModelsAndApi": true
+}
