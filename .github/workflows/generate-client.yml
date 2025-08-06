@@ -8,7 +8,7 @@ on:
         required: false
         type: choice
         options:
-          - skip # Skip version bump and client generation
+          - skip # Skip publish, but still generate client
           - none # No version bump, but still generate client
           - patch # For bug fixes
           - minor # For new features that are backward compatible

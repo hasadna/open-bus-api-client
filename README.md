@@ -10,18 +10,18 @@ A TypeScript client library for interacting with the Open-Bus API.
 
 ## 🔗 Related Projects
 
-### Frontend
-* [🗺️ Open Bus Map Search (Client App)](https://github.com/hasadna/open-bus-map-search) - [Live Website](https://open-bus-map-search.hasadna.org.il/dashboard)
-* [📦 Open Bus API Client (API Package Generator)](https://github.com/hasadna/open-bus-api-client)
-
-### Backend
-* [🏗️ Open Bus Pipelines](https://github.com/hasadna/open-bus-pipelines)
-* [🌐 Open Bus Stride API (REST)](https://github.com/hasadna/open-bus-stride-api) – [API Docs](https://open-bus-stride-api.hasadna.org.il/docs)
+- [🗺️ Open Bus Map Search (Client App)](https://github.com/hasadna/open-bus-map-search) - [Live Website](https://open-bus-map-search.hasadna.org.il/dashboard)
+- [🌐 Open Bus Stride API (REST)](https://github.com/hasadna/open-bus-stride-api) – [API Docs](https://open-bus-stride-api.hasadna.org.il/docs)
+- [📦 NPM Package](https://www.npmjs.com/package/@hasadna/open-bus-api-client)
 
 ## 📦 Installation
 
 ```bash
+# Instal Genetae Depencdy
 npm install
+
+# Instal NPM Package
+npm install @hasadna/open-bus-api-client
 ```
 
 ## 🚀 How to Generate & Publish the Client

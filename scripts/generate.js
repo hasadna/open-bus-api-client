@@ -56,6 +56,9 @@ Object.assign(clientPkg, {
   version: rootPkg.version,
   author: rootPkg.author,
   repository: rootPkg.repository,
+  dependencies: {
+    axios: rootPkg.dependencies?.axios || clientPkgPath.dependencies?.axios,
+  },
   description: rootPkg.description,
   homepage: rootPkg.homepage,
   keywords: rootPkg.keywords,
