@@ -8,7 +8,8 @@ on:
         required: false
         type: choice
         options:
-          - none # Generate client, Skip publish
+          - test-workflow # Test Generate client, Skip publish
+          - test-repository # Test Generate client, Skip publish
           - skip # No version bump, but still publish
           - patch # For bug fixes
           - minor # For new features that are backward compatible
@@ -32,6 +33,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: latest
+
+      - name: Set Test Workflow
+        id: test-workflow
+        run: |
+          TEST="${{ github.event.inputs.semver-fragment }}"
+          if [ -z "$TEST" ]; then
+            TEST="${{ github.event.client_payload.semver-fragment }}"
+          fi
+
+          if [[ $TEST == "test-workflow" ]]; then
+            echo "This is a test workflow run, skipping version bump and publish."
+            echo "fragment=none" >> "$GITHUB_OUTPUT"
+            echo "test=workflow" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [[ $TEST ==  == "test-repository" ]]; then
+            echo "This is a test repository dispatch run, skipping version bump and publish."
+            echo "fragment=none" >> "$GITHUB_OUTPUT"
+            echo "test=repository" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Determine semver fragment
         id: semver
@@ -78,12 +99,23 @@ jobs:
       - name: Install root dependencies
         run: npm install
 
+      - name: Download Json Schem
+        if: github.event_name == 'workflow_dispatch' || steps.test-workflow.outputs.test == 'workflow'
+        run: |
+          npm run download
+          if [ ! -f openapi.json ]; then
+            echo "OpenAPI JSON not found after download"
+            exit 1
+          fi
+
       - name: Setup Python
+        if: github.event_name == 'repository_dispatch' || steps.test-workflow.outputs.test == 'repository'
         uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
-      - name: Clone open-bus-stride-api and Download JSON
+      - name: Clone open-bus-stride-api and Download JSON Schema
+        if: github.event_name == 'repository_dispatch' || steps.test-workflow.outputs.test == 'repository'
         run: |
           git clone https://github.com/hasadna/open-bus-stride-api.git open-bus-stride-api
           git clone https://github.com/hasadna/open-bus-stride-db.git open-bus-stride-db
@@ -103,6 +135,8 @@ jobs:
           cd ..
 
           curl -L http://localhost:8000/openapi.json -o openapi.json
+
+          rm -rf open-bus-stride-api open-bus-stride-db
 
           if [ ! -f openapi.json ]; then
             echo "Failed to download OpenAPI JSON"
