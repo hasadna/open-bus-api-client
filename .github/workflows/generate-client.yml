@@ -117,10 +117,10 @@ jobs:
       - name: Clone open-bus-stride-api and Download JSON Schema
         if: github.event_name == 'repository_dispatch' || steps.test-workflow.outputs.test == 'repository'
         run: |
-          git clone https://github.com/hasadna/open-bus-stride-api.git open-bus-stride-api
-          git clone https://github.com/hasadna/open-bus-stride-db.git open-bus-stride-db
+          git clone https://github.com/hasadna/open-bus-stride-api.git tmp/open-bus-stride-api
+          git clone https://github.com/hasadna/open-bus-stride-db.git tmp/open-bus-stride-db
 
-          cd open-bus-stride-api
+          cd tmp/open-bus-stride-api
           python -m venv venv
           source venv/bin/activate
           pip install --upgrade pip
@@ -128,15 +128,18 @@ jobs:
           pip install -r ../open-bus-stride-db/requirements.txt
           pip install -e ../open-bus-stride-db
 
+          SHA = git log -1 --format=%H
+          echo "VERSION = '$SHA'" > open_bus_stride_api/version.py
+
           uvicorn open_bus_stride_api.main:app --host 0.0.0.0 --port 8000 &
 
           sleep 5
 
-          cd ..
+          cd ../../
 
           curl -L http://localhost:8000/openapi.json -o openapi.json
 
-          rm -rf open-bus-stride-api open-bus-stride-db
+          rm -rf tmp
 
           if [ ! -f openapi.json ]; then
             echo "Failed to download OpenAPI JSON"
@@ -153,16 +156,13 @@ jobs:
           path: client
 
       - name: Publish to npm
-        run: |
-          if [ "${{ steps.semver.outputs.fragment }}" = "none" ]; then
-            echo "Skipping npm publish as semver fragment is 'none'"
-            exit 0
-          fi
-          npm run publish
+        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
+        run: npm run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit and push regenerated client
+        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -173,7 +173,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create and push Git tag
-        if: steps.semver.outputs.fragment != 'skip'
+        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
         run: |
           TAG="v${{ steps.version.outputs.next-version }}"
           git tag "$TAG"
