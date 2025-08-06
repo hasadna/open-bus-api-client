@@ -71,12 +71,12 @@ jobs:
         run: npm install
 
       - name: Setup Python
-      - uses: actions/setup-python@v4
+        uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
       - name: Clone open-bus-stride-api and Download JSON
-      - run: |
+        run: |
           git clone https://github.com/hasadna/open-bus-stride-api.git ./open-bus-stride-api
           git clone https://github.com/hasadna/open-bus-stride-db.git ./open-bus-stride-db
 
