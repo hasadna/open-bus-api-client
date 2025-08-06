@@ -34,47 +34,36 @@ jobs:
         with:
           node-version: latest
 
-      - name: Set Test Workflow
-        id: test-workflow
+      - name: Set up Node.js environment
+        id: classify
         run: |
-          TEST="${{ github.event.inputs.semver-fragment }}"
-          if [ -z "$TEST" ]; then
-            TEST="${{ github.event.client_payload.semver-fragment }}"
+          FRAGMENT_TYPE="${{ github.event.inputs.semver-fragment }}"
+          if [ -z "$FRAGMENT_TYPE" ]; then
+          FRAGMENT_TYPE="${{ github.event.client_payload.semver-fragment }}"
           fi
 
-          echo "Detected semver-fragment: $TEST"
-
-          case "$TEST" in
+          TEST_TYPE=""
+          case "$FRAGMENT_TYPE" in
             test-workflow)
               echo "This is a test workflow run, skipping version bump and publish."
-              echo "fragment=none" >> "$GITHUB_OUTPUT"
-              echo "test=workflow" >> "$GITHUB_OUTPUT"
+              FRAGMENT_TYPE="none"
+              TEST_TYPE="workflow"
               ;;
             test-repository)
               echo "This is a test repository dispatch run, skipping version bump and publish."
-              echo "fragment=none" >> "$GITHUB_OUTPUT"
-              echo "test=repository" >> "$GITHUB_OUTPUT"
-              ;;
-            *)
-              echo "Regular workflow run detected (test type: $TEST)."
+              FRAGMENT_TYPE="none"
+              TEST_TYPE="repository"
               ;;
           esac
-
-      - name: Determine semver fragment
-        id: semver
-        run: |
-          FRAGMENT="${{ github.event.inputs.semver-fragment }}"
-          if [ -z "$FRAGMENT" ]; then
-            FRAGMENT="${{ github.event.client_payload.semver-fragment }}"
-          fi
-
-          if [[ "$FRAGMENT" != "none" && "$FRAGMENT" != "skip" && "$FRAGMENT" != "patch" && "$FRAGMENT" != "minor" && "$FRAGMENT" != "major" ]]; then
-            echo "Invalid semver fragment: $FRAGMENT"
+              
+          if [[ "$FRAGMENT_TYPE" != "none" && "$FRAGMENT_TYPE" != "skip" && "$FRAGMENT_TYPE" != "patch" && "$FRAGMENT_TYPE" != "minor" && "$FRAGMENT_TYPE" != "major" ]]; then
+            echo "Invalid semver fragment: $FRAGMENT_TYPE"
             exit 1
           fi
-
-          echo "Semver fragment: $FRAGMENT"
-          echo "fragment=$FRAGMENT" >> "$GITHUB_OUTPUT"
+              
+          echo "Final semver fragment: $FRAGMENT_TYPE"
+          echo "fragment=$FRAGMENT_TYPE" >> "$GITHUB_OUTPUT"
+          echo "test=$TEST_TYPE" >> "$GITHUB_OUTPUT"
 
       - name: Get current version from package.json
         id: get-version
@@ -89,15 +78,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version
-        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
           current-version: ${{ steps.get-version.outputs.version }}
-          version-fragment: ${{ steps.semver.outputs.fragment }}
+          version-fragment: ${{ steps.classify.outputs.fragment }}
 
       - name: Set new version in package.json
-        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
         run: |
           NEW_VERSION=${{ steps.version.outputs.next-version }}
           node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
@@ -106,7 +95,7 @@ jobs:
         run: npm install
 
       - name: Download Json Schem
-        if: github.event_name == 'workflow_dispatch' || steps.test-workflow.outputs.test == 'workflow'
+        if: github.event_name == 'workflow_dispatch' || steps.classify.outputs.test == 'workflow'
         run: |
           npm run download
           if [ ! -f openapi.json ]; then
@@ -115,13 +104,13 @@ jobs:
           fi
 
       - name: Setup Python
-        if: github.event_name == 'repository_dispatch' || steps.test-workflow.outputs.test == 'repository'
+        if: github.event_name == 'repository_dispatch' || steps.classify.outputs.test == 'repository'
         uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
       - name: Clone open-bus-stride-api and Download JSON Schema
-        if: github.event_name == 'repository_dispatch' || steps.test-workflow.outputs.test == 'repository'
+        if: github.event_name == 'repository_dispatch' || steps.classify.outputs.test == 'repository'
         run: |
           git clone https://github.com/hasadna/open-bus-stride-api.git tmp/open-bus-stride-api
           git clone https://github.com/hasadna/open-bus-stride-db.git tmp/open-bus-stride-db
@@ -162,13 +151,13 @@ jobs:
           path: client
 
       - name: Publish to npm
-        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
         run: npm run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit and push regenerated client
-        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -179,7 +168,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create and push Git tag
-        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
         run: |
           TAG="v${{ steps.version.outputs.next-version }}"
           git tag "$TAG"
