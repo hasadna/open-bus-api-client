@@ -75,7 +75,7 @@ jobs:
       #   run: npm run download
 
       - name: Clone Open Bus Stride API and Download JSON
-      - use: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
       - run: |
