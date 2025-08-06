@@ -48,13 +48,14 @@ const stops = await client.getBusStops(...);
 console.log(stops);
 ```
 
-📂 Project Structure
+## 📂 Project Structure
 
 ```bash
 .
 ├── client/                # Generated client code
 ├── openapi-templates/     # README templets
 ├── scripts/               # Custom JS scripts
-└── config.json            # Open-API generator config
-├── package.json           # NPM config
+├── config.json            # Open-API generator config
+├── openapitools.json      # Open-API generator cli config
+└── package.json           # NPM config
 ```
