@@ -8,12 +8,12 @@ on:
         required: false
         type: choice
         options:
-          - skip # Skip publish, but still generate client
-          - none # No version bump, but still generate client
+          - none # Generate client, Skip publish
+          - skip # No version bump, but still publish
           - patch # For bug fixes
           - minor # For new features that are backward compatible
           - major # For changes that break backward compatibility
-        default: skip
+        default: none
 
   repository_dispatch:
     types: [generate-client]
@@ -41,7 +41,7 @@ jobs:
             FRAGMENT="${{ github.event.client_payload.semver-fragment }}"
           fi
 
-          if [[ "$FRAGMENT" != "skip" && "$FRAGMENT" != "none" && "$FRAGMENT" != "patch" && "$FRAGMENT" != "minor" && "$FRAGMENT" != "major" ]]; then
+          if [[ "$FRAGMENT" != "none" && "$FRAGMENT" != "skip" && "$FRAGMENT" != "patch" && "$FRAGMENT" != "minor" && "$FRAGMENT" != "major" ]]; then
             echo "Invalid semver fragment: $FRAGMENT"
             exit 1
           fi
@@ -54,8 +54,8 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Bump version (if not 'skip')
-        if: steps.semver.outputs.fragment != 'skip'
+      - name: Bump version
+        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
@@ -70,8 +70,33 @@ jobs:
       - name: Install root dependencies
         run: npm install
 
-      - name: Download OpenAPI JSON
-        run: npm run download
+      # - name: Download JSON for production
+      #   if: github.event_name == 'repository_dispatch'
+      #   run: npm run download
+
+      - name: Clone Open Bus Stride API and Download JSON
+      - use: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - run: |
+          git clone https://github.com/hasadna/open-bus-stride-api.git ./open-bus-stride-api
+          git clone https://github.com/hasadna/open-bus-stride-db.git ./open-bus-stride-db
+
+          cd open-bus-stride-api
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r open-bus-stride-api/requirements.txt
+          pip install -r ../open-bus-stride-db/requirements.txt
+
+          uvicorn open_bus_stride_api.main:app --host 0.0.0.0 --port 8000 &
+
+          sleep 15
+
+          curl -L http://localhost:8000/openapi.json -o openapi.json
+          if [ ! -f openapi.json ]; then
+            echo "Failed to download OpenAPI JSON"
+            exit 1
+          fi
 
       - name: Generate client
         run: npm run generate
@@ -83,8 +108,8 @@ jobs:
 
       - name: Publish to npm
         run: |
-          if [ "${{ steps.semver.outputs.fragment }}" = "skip" ]; then
-            echo "Skipping npm publish as semver fragment is 'skip'."
+          if [ "${{ steps.semver.outputs.fragment }}" = "none" ]; then
+            echo "Skipping npm publish as semver fragment is 'none'"
             exit 0
           fi
           npm run publish
