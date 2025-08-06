@@ -77,13 +77,14 @@ jobs:
 
       - name: Clone open-bus-stride-api and Download JSON
         run: |
-          git clone https://github.com/hasadna/open-bus-stride-api.git ./open-bus-stride-api
-          git clone https://github.com/hasadna/open-bus-stride-db.git ./open-bus-stride-db
+          git clone https://github.com/hasadna/open-bus-stride-api.git open-bus-stride-api
+          git clone https://github.com/hasadna/open-bus-stride-db.git open-bus-stride-db
 
           cd open-bus-stride-api
           python -m venv venv
           source venv/bin/activate
-          pip install -r open-bus-stride-api/requirements.txt
+          pip install --upgrade pip
+          pip install -r requirements.txt
           pip install -r ../open-bus-stride-db/requirements.txt
 
           uvicorn open_bus_stride_api.main:app --host 0.0.0.0 --port 8000 &
