@@ -1,6 +1,6 @@
 {
   "name": "@hasadna/open-bus-api-client",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "description": "A client library for interacting with the Open-Bus API.",
   "author": "hasadna",
   "repository": {
