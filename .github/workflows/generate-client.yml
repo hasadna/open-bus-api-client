@@ -24,7 +24,6 @@ permissions:
 
 jobs:
   generate-client:
-    if: ${{ github.event.client_payload.semver-fragment != 'skip' || github.event.inputs.semver-fragment != 'skip' }}
     name: Generate Client API
     runs-on: ubuntu-latest
 
@@ -49,11 +48,6 @@ jobs:
 
           echo "fragment=$FRAGMENT" >> "$GITHUB_OUTPUT"
 
-          if [ "$FRAGMENT" = "skip" ]; then
-            echo "Skipping generate package."
-            exit 0
-          fi
-
       - name: Get current version from package.json
         id: get-version
         run: |
@@ -61,6 +55,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version (if not 'skip')
+        if: steps.semver.outputs.fragment != 'skip'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
@@ -81,8 +76,18 @@ jobs:
       - name: Generate client
         run: npm run generate
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: generated-client
+
       - name: Publish to npm
-        run: npm run publish
+        run: |
+          if [ "${{ steps.semver.outputs.fragment }}" = "skip" ]; then
+            echo "Skipping npm publish as semver fragment is 'skip'."
+            exit 0
+          fi
+          npm run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
