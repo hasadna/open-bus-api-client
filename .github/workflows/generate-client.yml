@@ -70,17 +70,12 @@ jobs:
       - name: Install root dependencies
         run: npm install
 
-      # - name: Download json form production
-      #   if: github.event_name == 'repository_dispatch'
-      #   run: npm run download
       - name: Setup Python
-        # if: github.event_name == 'workflow_dispatch'
       - uses: actions/setup-python@v4
         with:
           python-version: "3.8"
 
       - name: Clone open-bus-stride-api and Download JSON
-        # if: github.event_name == 'workflow_dispatch'
       - run: |
           git clone https://github.com/hasadna/open-bus-stride-api.git ./open-bus-stride-api
           git clone https://github.com/hasadna/open-bus-stride-db.git ./open-bus-stride-db
