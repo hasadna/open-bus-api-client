@@ -2,13 +2,21 @@
 
 A TypeScript client library for interacting with the Open-Bus API.
 
-## 🔗 Links
+## 📢 Get Involved
 
-- [📦 NPM Package](https://www.npmjs.com/package/@hasadna/open-bus-api-client)
-- [🌐 Website Client](https://github.com/hasadna/open-bus-map-search/)
-- [💻 API Server](https://github.com/hasadna/open-bus-stride-api)
-- [📂 Package Flies](https://github.com/hasadna/open-bus-api-client/tree/main/client)
-- [💬 Slack](https://join.slack.com/t/hasadna/shared_invite/zt-167h764cg-J18ZcY1odoitq978IyMMig)
+- 💬 For general help and system updates, join the Hasadna Slack: [#open-bus channel](https://join.slack.com/t/hasadna/shared_invite/zt-167h764cg-J18ZcY1odoitq978IyMMig)
+- 🐞 Found a bug or have a feature request? [Open an issue](https://github.com/hasadna/open-bus-map-search/issues/new)
+- 🤝 Want to contribute? See our [contributing guidelines](https://github.com/hasadna/open-bus-pipelines/blob/main/CONTRIBUTING.md)
+
+## 🔗 Related Projects
+
+### Frontend
+* [🗺️ Open Bus Map Search (Client App)](https://github.com/hasadna/open-bus-map-search) - [Live Website](https://open-bus-map-search.hasadna.org.il/dashboard)
+* [📦 Open Bus API Client (API Package Generator)](https://github.com/hasadna/open-bus-api-client)
+
+### Backend
+* [🏗️ Open Bus Pipelines](https://github.com/hasadna/open-bus-pipelines)
+* [🌐 Open Bus Stride API (REST)](https://github.com/hasadna/open-bus-stride-api) – [API Docs](https://open-bus-stride-api.hasadna.org.il/docs)
 
 ## 📦 Installation
 
