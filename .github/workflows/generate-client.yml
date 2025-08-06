@@ -14,7 +14,6 @@ on:
           - patch # For bug fixes
           - minor # For new features that are backward compatible
           - major # For changes that break backward compatibility
-        default: none
 
   repository_dispatch:
     types: [generate-client]
@@ -46,17 +45,17 @@ jobs:
           case "$FRAGMENT_TYPE" in
             test-workflow)
               echo "This is a test workflow run, skipping version bump and publish."
-              FRAGMENT_TYPE="none"
+              FRAGMENT_TYPE="test"
               TEST_TYPE="workflow"
               ;;
             test-repository)
               echo "This is a test repository dispatch run, skipping version bump and publish."
-              FRAGMENT_TYPE="none"
+              FRAGMENT_TYPE="test"
               TEST_TYPE="repository"
               ;;
           esac
               
-          if [[ "$FRAGMENT_TYPE" != "none" && "$FRAGMENT_TYPE" != "skip" && "$FRAGMENT_TYPE" != "patch" && "$FRAGMENT_TYPE" != "minor" && "$FRAGMENT_TYPE" != "major" ]]; then
+          if [[ "$FRAGMENT_TYPE" != "test" && "$FRAGMENT_TYPE" != "skip" && "$FRAGMENT_TYPE" != "patch" && "$FRAGMENT_TYPE" != "minor" && "$FRAGMENT_TYPE" != "major" ]]; then
             echo "Invalid semver fragment: $FRAGMENT_TYPE"
             exit 1
           fi
@@ -78,7 +77,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
@@ -86,7 +85,7 @@ jobs:
           version-fragment: ${{ steps.classify.outputs.fragment }}
 
       - name: Set new version in package.json
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
         run: |
           NEW_VERSION=${{ steps.version.outputs.next-version }}
           node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
@@ -123,8 +122,8 @@ jobs:
           pip install -r ../open-bus-stride-db/requirements.txt
           pip install -e ../open-bus-stride-db
 
-          SHA = git log -1 --format=%H
-          echo "VERSION = '$SHA'" > open_bus_stride_api/version.py
+          SHA=$(git log -1 --format=%H)
+          echo "VERSION = '$SHA'" > open_bus_stride_api/version.py          echo "VERSION = '$SHA'" > open_bus_stride_api/version.py
 
           uvicorn open_bus_stride_api.main:app --host 0.0.0.0 --port 8000 &
 
@@ -151,13 +150,13 @@ jobs:
           path: client
 
       - name: Publish to npm
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
         run: npm run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit and push regenerated client
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -168,7 +167,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create and push Git tag
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'none'
+        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
         run: |
           TAG="v${{ steps.version.outputs.next-version }}"
           git tag "$TAG"
