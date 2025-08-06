@@ -42,17 +42,23 @@ jobs:
             TEST="${{ github.event.client_payload.semver-fragment }}"
           fi
 
-          if [[ $TEST == "test-workflow" ]]; then
-            echo "This is a test workflow run, skipping version bump and publish."
-            echo "fragment=none" >> "$GITHUB_OUTPUT"
-            echo "test=workflow" >> "$GITHUB_OUTPUT"
-          fi
+          echo "Detected semver-fragment: $TEST"
 
-          if [[ $TEST ==  == "test-repository" ]]; then
-            echo "This is a test repository dispatch run, skipping version bump and publish."
-            echo "fragment=none" >> "$GITHUB_OUTPUT"
-            echo "test=repository" >> "$GITHUB_OUTPUT"
-          fi
+          case "$TEST" in
+            test-workflow)
+              echo "This is a test workflow run, skipping version bump and publish."
+              echo "fragment=none" >> "$GITHUB_OUTPUT"
+              echo "test=workflow" >> "$GITHUB_OUTPUT"
+              ;;
+            test-repository)
+              echo "This is a test repository dispatch run, skipping version bump and publish."
+              echo "fragment=none" >> "$GITHUB_OUTPUT"
+              echo "test=repository" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "Regular workflow run detected (test type: $TEST)."
+              ;;
+          esac
 
       - name: Determine semver fragment
         id: semver
