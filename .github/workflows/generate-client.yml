@@ -68,12 +68,12 @@ jobs:
         with:
           current-version: ${{ steps.get-version.outputs.version }}
           version-fragment: ${{ steps.semver.outputs.fragment }}
-      - run: |
-          FRAGMENT="${{ steps.semver.outputs.fragment }}"
-          if [ "$FRAGMENT" != "skip" ] && [ "$FRAGMENT" != "none" ]; then
-            NEW_VERSION=${{ steps.version.outputs.next-version }}
-            node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
-          fi
+
+      - name: Set new version in package.json
+        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
+        run: |
+          NEW_VERSION=${{ steps.version.outputs.next-version }}
+          node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
 
       - name: Install root dependencies
         run: npm install
@@ -116,6 +116,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: generated-client
+          path: client
 
       - name: Publish to npm
         run: |
