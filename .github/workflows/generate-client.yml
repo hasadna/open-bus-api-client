@@ -30,6 +30,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
 
       - name: Determine semver fragment
         id: semver
@@ -38,37 +41,33 @@ jobs:
           if [ -z "$FRAGMENT" ]; then
             FRAGMENT="${{ github.event.client_payload.semver-fragment }}"
           fi
+
           if [[ "$FRAGMENT" != "skip" && "$FRAGMENT" != "none" && "$FRAGMENT" != "patch" && "$FRAGMENT" != "minor" && "$FRAGMENT" != "major" ]]; then
             echo "Invalid semver fragment: $FRAGMENT"
             exit 1
           fi
+
           echo "fragment=$FRAGMENT" >> "$GITHUB_OUTPUT"
+
           if [ "$FRAGMENT" = "skip" ]; then
-            echo "Skipping generatep package."
+            echo "Skipping generate package."
             exit 0
           fi
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: latest
-
-      - name: Read current version from package.json
-        id: read-version
+      - name: Get current version from package.json
+        id: get-version
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version (if not 'skip')
-        if: steps.semver-fragment.outputs.fragment != 'skip'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
-          current-version: ${{ steps.read-version.outputs.version }}
-          version-fragment: ${{ steps.semver-fragment.outputs.fragment }}
+          current-version: ${{ steps.get-version.outputs.version }}
+          version-fragment: ${{ steps.semver.outputs.fragment }}
 
       - name: Write new version to package.json
-        if: steps.semver-fragment.outputs.fragment != 'skip'
         run: |
           NEW_VERSION=${{ steps.version.outputs.next-version }}
           node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
