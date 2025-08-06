@@ -62,14 +62,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version
-        if: steps.semver.outputs.fragment != 'skip'
+        if: steps.semver.outputs.fragment != 'skip' && steps.semver.outputs.fragment != 'none'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
           current-version: ${{ steps.get-version.outputs.version }}
           version-fragment: ${{ steps.semver.outputs.fragment }}
       - run: |
-          if [ ${ steps.semver.outputs.fragment } != "skip" ]; then
+          FRAGMENT="${{ steps.semver.outputs.fragment }}"
+          if [ "$FRAGMENT" != "skip" ] && [ "$FRAGMENT" != "none" ]; then
             NEW_VERSION=${{ steps.version.outputs.next-version }}
             node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
           fi
@@ -131,13 +132,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "chore: bump version to ${{ steps.increment.outputs.next-version }}"
+          git commit -m "chore: bump version to ${{ steps.version.outputs.next-version }}"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create and push Git tag
-        if: steps.semver-fragment.outputs.fragment != 'skip'
+        if: steps.semver.outputs.fragment != 'skip'
         run: |
           TAG="v${{ steps.version.outputs.next-version }}"
           git tag "$TAG"
