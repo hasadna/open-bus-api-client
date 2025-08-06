@@ -46,24 +46,20 @@ console.log("📦 Updating client package.json...");
 const clientPkgPath = resolve("client/package.json");
 const rootPkg = JSON.parse(readFileSync(resolve("package.json"), "utf-8"));
 const clientPkg = JSON.parse(readFileSync(clientPkgPath, "utf-8"));
-const openapiPkg = JSON.parse(readFileSync(resolve("openapi.json"), "utf-8"));
 
-const sha = process.env.DISPATCH_SHA || openapiPkg.info.version || "unknown";
-
-const now = new Date();
-const yyyy = now.getFullYear();
-const MM = String(now.getMonth() + 1).padStart(2, "0");
-const dd = String(now.getDate()).padStart(2, "0");
-
-const version = `${rootPkg.version}-${sha.slice(0, 7)}-${yyyy}${MM}${dd}`;
+if (!rootPkg.version) {
+  console.error("❌ Error: Version not found in root package.json.");
+  process.exit(1);
+}
 
 Object.assign(clientPkg, {
-  version,
+  version: rootPkg.version,
   author: rootPkg.author,
   repository: rootPkg.repository,
   description: rootPkg.description,
   homepage: rootPkg.homepage,
   keywords: rootPkg.keywords,
+  publishConfig: rootPkg.publishConfig,
 });
 
 writeFileSync(clientPkgPath, JSON.stringify(clientPkg, null, 2) + "\n");

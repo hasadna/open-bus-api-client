@@ -2,6 +2,19 @@ name: Generate Client API
 
 on:
   workflow_dispatch:
+    inputs:
+      semver-fragment:
+        description: "Semver bump for package.json"
+        required: false
+        type: choice
+        options:
+          - skip # Skip version bump and client generation
+          - none # No version bump, but still generate client
+          - patch # For bug fixes
+          - minor # For new features that are backward compatible
+          - major # For changes that break backward compatibility
+        default: skip
+
   repository_dispatch:
     types: [generate-client]
 
@@ -11,21 +24,57 @@ permissions:
 
 jobs:
   generate-client:
+    if: ${{ github.event.client_payload.semver-fragment != 'skip' || github.event.inputs.semver-fragment != 'skip' }}
+    name: Generate Client API
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Determine semver fragment
+        id: semver
+        run: |
+          FRAGMENT="${{ github.event.inputs.semver-fragment }}"
+          if [ -z "$FRAGMENT" ]; then
+            FRAGMENT="${{ github.event.client_payload.semver-fragment }}"
+          fi
+          if [[ "$FRAGMENT" != "skip" && "$FRAGMENT" != "none" && "$FRAGMENT" != "patch" && "$FRAGMENT" != "minor" && "$FRAGMENT" != "major" ]]; then
+            echo "Invalid semver fragment: $FRAGMENT"
+            exit 1
+          fi
+          echo "fragment=$FRAGMENT" >> "$GITHUB_OUTPUT"
+          if [ "$FRAGMENT" = "skip" ]; then
+            echo "Skipping generatep package."
+            exit 0
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: latest
 
+      - name: Read current version from package.json
+        id: read-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump version (if not 'skip')
+        if: steps.semver-fragment.outputs.fragment != 'skip'
+        id: version
+        uses: christian-draeger/increment-semantic-version@1.2.3
+        with:
+          current-version: ${{ steps.read-version.outputs.version }}
+          version-fragment: ${{ steps.semver-fragment.outputs.fragment }}
+
+      - name: Write new version to package.json
+        if: steps.semver-fragment.outputs.fragment != 'skip'
+        run: |
+          NEW_VERSION=${{ steps.version.outputs.next-version }}
+          node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
+
       - name: Install root dependencies
         run: npm install
-
-      - name: Export dispatched SHA (if any)
-        run: echo "DISPATCH_SHA=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
 
       - name: Download OpenAPI JSON
         run: npm run download
@@ -38,15 +87,21 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Move generated client to src/
-        run: npm run postpublish
-
       - name: Commit and push regenerated client
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add src
-          git commit -m "chore: regenerate client from OpenAPI"
+          git add .
+          git commit -m "chore: bump version to ${{ steps.increment.outputs.next-version }}"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create and push Git tag
+        if: steps.semver-fragment.outputs.fragment != 'skip'
+        run: |
+          TAG="v${{ steps.version.outputs.next-version }}"
+          git tag "$TAG"
+          git push origin "$TAG"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
