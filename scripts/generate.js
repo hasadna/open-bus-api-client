@@ -20,7 +20,7 @@ try {
   console.log("🚀 Generating client code...");
 
   execSync(
-    "openapi-generator-cli generate -g typescript-axios -i openapi.json -o ./client -c config.json --template-dir openapi-templates/typescript-axios",
+    "openapi-generator-cli generate -g typescript-fetch -i openapi.json -o ./client -c config.json --template-dir openapi-templates/typescript-fetch",
     { cwd: rootDir, stdio: "inherit" },
   );
 } catch (error) {
@@ -56,9 +56,6 @@ Object.assign(clientPkg, {
   version: rootPkg.version,
   author: rootPkg.author,
   repository: rootPkg.repository,
-  dependencies: {
-    axios: rootPkg.dependencies?.axios || clientPkgPath.dependencies?.axios,
-  },
   description: rootPkg.description,
   homepage: rootPkg.homepage,
   keywords: rootPkg.keywords,

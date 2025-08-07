@@ -12,75 +12,81 @@
  * Do not edit the class manually.
  */
 
-
-import type { Configuration } from './configuration';
-// Some imports not used depending on template conditions
-// @ts-ignore
-import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
-import globalAxios from 'axios';
-
-export const BASE_PATH = "http://localhost".replace(/\/+$/, "");
-
-/**
- *
- * @export
- */
-export const COLLECTION_FORMATS = {
-    csv: ",",
-    ssv: " ",
-    tsv: "\t",
-    pipes: "|",
-};
+import { mapValues } from '../runtime';
+import type { LocationInner } from './LocationInner';
+import {
+    LocationInnerFromJSON,
+    LocationInnerFromJSONTyped,
+    LocationInnerToJSON,
+    LocationInnerToJSONTyped,
+} from './LocationInner';
 
 /**
- *
+ * 
  * @export
- * @interface RequestArgs
+ * @interface ValidationError
  */
-export interface RequestArgs {
-    url: string;
-    options: RawAxiosRequestConfig;
+export interface ValidationError {
+    /**
+     * 
+     * @type {Array<LocationInner>}
+     * @memberof ValidationError
+     */
+    loc: Array<LocationInner>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ValidationError
+     */
+    msg: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ValidationError
+     */
+    type: string;
 }
 
 /**
- *
- * @export
- * @class BaseAPI
+ * Check if a given object implements the ValidationError interface.
  */
-export class BaseAPI {
-    protected configuration: Configuration | undefined;
+export function instanceOfValidationError(value: object): value is ValidationError {
+    if (!('loc' in value) || value['loc'] === undefined) return false;
+    if (!('msg' in value) || value['msg'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    return true;
+}
 
-    constructor(configuration?: Configuration, protected basePath: string = BASE_PATH, protected axios: AxiosInstance = globalAxios) {
-        if (configuration) {
-            this.configuration = configuration;
-            this.basePath = configuration.basePath ?? basePath;
-        }
+export function ValidationErrorFromJSON(json: any): ValidationError {
+    return ValidationErrorFromJSONTyped(json, false);
+}
+
+export function ValidationErrorFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationError {
+    if (json == null) {
+        return json;
     }
-};
+    return {
+        
+        'loc': ((json['loc'] as Array<any>).map(LocationInnerFromJSON)),
+        'msg': json['msg'],
+        'type': json['type'],
+    };
+}
 
-/**
- *
- * @export
- * @class RequiredError
- * @extends {Error}
- */
-export class RequiredError extends Error {
-    constructor(public field: string, msg?: string) {
-        super(msg);
-        this.name = "RequiredError"
+export function ValidationErrorToJSON(json: any): ValidationError {
+    return ValidationErrorToJSONTyped(json, false);
+}
+
+export function ValidationErrorToJSONTyped(value?: ValidationError | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
+
+    return {
+        
+        'loc': ((value['loc'] as Array<any>).map(LocationInnerToJSON)),
+        'msg': value['msg'],
+        'type': value['type'],
+    };
 }
 
-interface ServerMap {
-    [key: string]: {
-        url: string,
-        description: string,
-    }[];
-}
-
-/**
- *
- * @export
- */
-export const operationServerMap: ServerMap = {
-}

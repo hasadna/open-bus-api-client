@@ -22,15 +22,12 @@
     "generate": "node scripts/generate.js",
     "publish": "node scripts/publish.js"
   },
-  "dependencies": {
-    "axios": "^1.11.0"
-  },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.21.4",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@hasadna/open-bus-api-client"
+    "registry": "https://npm.pkg.github.com/"
   }
 }

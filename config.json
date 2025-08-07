@@ -1,8 +1,5 @@
 {
   "npmName": "@hasadna/open-bus-api-client",
   "licenseName": "MIT",
-  "apiPackage": "api",
-  "modelPackage": "models",
-  "withSeparateModelsAndApi": false,
-  "paramNaming": "camelCase"
+  "supportsES6": true
 }

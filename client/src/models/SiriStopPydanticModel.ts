@@ -12,7 +12,64 @@
  * Do not edit the class manually.
  */
 
+import { mapValues } from '../runtime';
+/**
+ * 
+ * @export
+ * @interface SiriStopPydanticModel
+ */
+export interface SiriStopPydanticModel {
+    /**
+     * 
+     * @type {number}
+     * @memberof SiriStopPydanticModel
+     */
+    id: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SiriStopPydanticModel
+     */
+    code: number;
+}
 
-export * from "./api";
-export * from "./configuration";
+/**
+ * Check if a given object implements the SiriStopPydanticModel interface.
+ */
+export function instanceOfSiriStopPydanticModel(value: object): value is SiriStopPydanticModel {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('code' in value) || value['code'] === undefined) return false;
+    return true;
+}
+
+export function SiriStopPydanticModelFromJSON(json: any): SiriStopPydanticModel {
+    return SiriStopPydanticModelFromJSONTyped(json, false);
+}
+
+export function SiriStopPydanticModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): SiriStopPydanticModel {
+    if (json == null) {
+        return json;
+    }
+    return {
+        
+        'id': json['id'],
+        'code': json['code'],
+    };
+}
+
+export function SiriStopPydanticModelToJSON(json: any): SiriStopPydanticModel {
+    return SiriStopPydanticModelToJSONTyped(json, false);
+}
+
+export function SiriStopPydanticModelToJSONTyped(value?: SiriStopPydanticModel | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
+    }
+
+    return {
+        
+        'id': value['id'],
+        'code': value['code'],
+    };
+}
 
