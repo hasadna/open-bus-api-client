@@ -1,4 +1,5 @@
 {
   "npmName": "@hasadna/open-bus-api-client",
-  "licenseName": "MIT"
+  "licenseName": "MIT",
+  "supportsES6": true
 }

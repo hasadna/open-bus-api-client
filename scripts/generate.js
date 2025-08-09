@@ -38,7 +38,6 @@ await rimraf([
   "client/.openapi-generator-ignore",
   "client/.npmignore",
   "client/git_push.sh",
-  "*.log",
 ]);
 
 // Update client package.json with version and metadata
