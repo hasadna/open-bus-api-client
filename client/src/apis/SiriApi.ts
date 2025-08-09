@@ -49,31 +49,11 @@ import {
     SiriVehicleLocationWithRelatedPydanticModelToJSON,
 } from '../models/index';
 
-export interface GetSiriRideStopsGetGetRequest {
+export interface SiriRideStopsGetGetRequest {
     id: number;
 }
 
-export interface GetSiriRidesGetGetRequest {
-    id: number;
-}
-
-export interface GetSiriRoutesGetGetRequest {
-    id: number;
-}
-
-export interface GetSiriSnapshotsGetGetRequest {
-    id: number;
-}
-
-export interface GetSiriStopsGetGetRequest {
-    id: number;
-}
-
-export interface GetSiriVehicleLocationsGetGetRequest {
-    id: number;
-}
-
-export interface ListSiriRideStopsListGetRequest {
+export interface SiriRideStopsListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -96,7 +76,11 @@ export interface ListSiriRideStopsListGetRequest {
     orderBy?: string;
 }
 
-export interface ListSiriRidesListGetRequest {
+export interface SiriRidesGetGetRequest {
+    id: number;
+}
+
+export interface SiriRidesListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -126,7 +110,11 @@ export interface ListSiriRidesListGetRequest {
     orderBy?: string;
 }
 
-export interface ListSiriRoutesListGetRequest {
+export interface SiriRoutesGetGetRequest {
+    id: number;
+}
+
+export interface SiriRoutesListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -135,7 +123,11 @@ export interface ListSiriRoutesListGetRequest {
     orderBy?: string;
 }
 
-export interface ListSiriSnapshotsListGetRequest {
+export interface SiriSnapshotsGetGetRequest {
+    id: number;
+}
+
+export interface SiriSnapshotsListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -143,7 +135,11 @@ export interface ListSiriSnapshotsListGetRequest {
     orderBy?: string;
 }
 
-export interface ListSiriStopsListGetRequest {
+export interface SiriStopsGetGetRequest {
+    id: number;
+}
+
+export interface SiriStopsListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -151,7 +147,11 @@ export interface ListSiriStopsListGetRequest {
     orderBy?: string;
 }
 
-export interface ListSiriVehicleLocationsListGetRequest {
+export interface SiriVehicleLocationsGetGetRequest {
+    id: number;
+}
+
+export interface SiriVehicleLocationsListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -183,11 +183,11 @@ export class SiriApi extends runtime.BaseAPI {
      * Return a single siri ride stop based on id
      * Get 
      */
-    async getSiriRideStopsGetGetRaw(requestParameters: GetSiriRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriRideStopPydanticModel>> {
+    async siriRideStopsGetGetRaw(requestParameters: SiriRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriRideStopPydanticModel>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling getSiriRideStopsGetGet().'
+                'Required parameter "id" was null or undefined when calling siriRideStopsGetGet().'
             );
         }
 
@@ -216,218 +216,8 @@ export class SiriApi extends runtime.BaseAPI {
      * Return a single siri ride stop based on id
      * Get 
      */
-    async getSiriRideStopsGetGet(requestParameters: GetSiriRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriRideStopPydanticModel> {
-        const response = await this.getSiriRideStopsGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single siri ride based on id
-     * Get 
-     */
-    async getSiriRidesGetGetRaw(requestParameters: GetSiriRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriRidePydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getSiriRidesGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/siri_rides/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SiriRidePydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single siri ride based on id
-     * Get 
-     */
-    async getSiriRidesGetGet(requestParameters: GetSiriRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriRidePydanticModel> {
-        const response = await this.getSiriRidesGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single siri route based on id
-     * Get 
-     */
-    async getSiriRoutesGetGetRaw(requestParameters: GetSiriRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriRoutePydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getSiriRoutesGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/siri_routes/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SiriRoutePydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single siri route based on id
-     * Get 
-     */
-    async getSiriRoutesGetGet(requestParameters: GetSiriRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriRoutePydanticModel> {
-        const response = await this.getSiriRoutesGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single siri snapshot based on id
-     * Get 
-     */
-    async getSiriSnapshotsGetGetRaw(requestParameters: GetSiriSnapshotsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriSnapshotPydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getSiriSnapshotsGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/siri_snapshots/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SiriSnapshotPydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single siri snapshot based on id
-     * Get 
-     */
-    async getSiriSnapshotsGetGet(requestParameters: GetSiriSnapshotsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriSnapshotPydanticModel> {
-        const response = await this.getSiriSnapshotsGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single siri stop based on id
-     * Get 
-     */
-    async getSiriStopsGetGetRaw(requestParameters: GetSiriStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriStopPydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getSiriStopsGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/siri_stops/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SiriStopPydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single siri stop based on id
-     * Get 
-     */
-    async getSiriStopsGetGet(requestParameters: GetSiriStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriStopPydanticModel> {
-        const response = await this.getSiriStopsGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single siri vehicle location based on id
-     * Get 
-     */
-    async getSiriVehicleLocationsGetGetRaw(requestParameters: GetSiriVehicleLocationsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriVehicleLocationPydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getSiriVehicleLocationsGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/siri_vehicle_locations/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SiriVehicleLocationPydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single siri vehicle location based on id
-     * Get 
-     */
-    async getSiriVehicleLocationsGetGet(requestParameters: GetSiriVehicleLocationsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriVehicleLocationPydanticModel> {
-        const response = await this.getSiriVehicleLocationsGetGetRaw(requestParameters, initOverrides);
+    async siriRideStopsGetGet(requestParameters: SiriRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriRideStopPydanticModel> {
+        const response = await this.siriRideStopsGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -435,7 +225,7 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri ride stops.
      * List 
      */
-    async listSiriRideStopsListGetRaw(requestParameters: ListSiriRideStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriRideStopWithRelatedPydanticModel>>> {
+    async siriRideStopsListGetRaw(requestParameters: SiriRideStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriRideStopWithRelatedPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -537,8 +327,50 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri ride stops.
      * List 
      */
-    async listSiriRideStopsListGet(requestParameters: ListSiriRideStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriRideStopWithRelatedPydanticModel>> {
-        const response = await this.listSiriRideStopsListGetRaw(requestParameters, initOverrides);
+    async siriRideStopsListGet(requestParameters: SiriRideStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriRideStopWithRelatedPydanticModel>> {
+        const response = await this.siriRideStopsListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single siri ride based on id
+     * Get 
+     */
+    async siriRidesGetGetRaw(requestParameters: SiriRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriRidePydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling siriRidesGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/siri_rides/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SiriRidePydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single siri ride based on id
+     * Get 
+     */
+    async siriRidesGetGet(requestParameters: SiriRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriRidePydanticModel> {
+        const response = await this.siriRidesGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -546,7 +378,7 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri rides.
      * List 
      */
-    async listSiriRidesListGetRaw(requestParameters: ListSiriRidesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriRideWithRelatedPydanticModel>>> {
+    async siriRidesListGetRaw(requestParameters: SiriRidesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriRideWithRelatedPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -676,8 +508,50 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri rides.
      * List 
      */
-    async listSiriRidesListGet(requestParameters: ListSiriRidesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriRideWithRelatedPydanticModel>> {
-        const response = await this.listSiriRidesListGetRaw(requestParameters, initOverrides);
+    async siriRidesListGet(requestParameters: SiriRidesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriRideWithRelatedPydanticModel>> {
+        const response = await this.siriRidesListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single siri route based on id
+     * Get 
+     */
+    async siriRoutesGetGetRaw(requestParameters: SiriRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriRoutePydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling siriRoutesGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/siri_routes/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SiriRoutePydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single siri route based on id
+     * Get 
+     */
+    async siriRoutesGetGet(requestParameters: SiriRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriRoutePydanticModel> {
+        const response = await this.siriRoutesGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -685,7 +559,7 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri routes.
      * List 
      */
-    async listSiriRoutesListGetRaw(requestParameters: ListSiriRoutesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriRoutePydanticModel>>> {
+    async siriRoutesListGetRaw(requestParameters: SiriRoutesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriRoutePydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -731,8 +605,50 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri routes.
      * List 
      */
-    async listSiriRoutesListGet(requestParameters: ListSiriRoutesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriRoutePydanticModel>> {
-        const response = await this.listSiriRoutesListGetRaw(requestParameters, initOverrides);
+    async siriRoutesListGet(requestParameters: SiriRoutesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriRoutePydanticModel>> {
+        const response = await this.siriRoutesListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single siri snapshot based on id
+     * Get 
+     */
+    async siriSnapshotsGetGetRaw(requestParameters: SiriSnapshotsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriSnapshotPydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling siriSnapshotsGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/siri_snapshots/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SiriSnapshotPydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single siri snapshot based on id
+     * Get 
+     */
+    async siriSnapshotsGetGet(requestParameters: SiriSnapshotsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriSnapshotPydanticModel> {
+        const response = await this.siriSnapshotsGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -740,7 +656,7 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri snapshots.
      * List 
      */
-    async listSiriSnapshotsListGetRaw(requestParameters: ListSiriSnapshotsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriSnapshotPydanticModel>>> {
+    async siriSnapshotsListGetRaw(requestParameters: SiriSnapshotsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriSnapshotPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -782,8 +698,50 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri snapshots.
      * List 
      */
-    async listSiriSnapshotsListGet(requestParameters: ListSiriSnapshotsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriSnapshotPydanticModel>> {
-        const response = await this.listSiriSnapshotsListGetRaw(requestParameters, initOverrides);
+    async siriSnapshotsListGet(requestParameters: SiriSnapshotsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriSnapshotPydanticModel>> {
+        const response = await this.siriSnapshotsListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single siri stop based on id
+     * Get 
+     */
+    async siriStopsGetGetRaw(requestParameters: SiriStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriStopPydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling siriStopsGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/siri_stops/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SiriStopPydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single siri stop based on id
+     * Get 
+     */
+    async siriStopsGetGet(requestParameters: SiriStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriStopPydanticModel> {
+        const response = await this.siriStopsGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -791,7 +749,7 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri stops.
      * List 
      */
-    async listSiriStopsListGetRaw(requestParameters: ListSiriStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriStopPydanticModel>>> {
+    async siriStopsListGetRaw(requestParameters: SiriStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriStopPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -833,8 +791,50 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri stops.
      * List 
      */
-    async listSiriStopsListGet(requestParameters: ListSiriStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriStopPydanticModel>> {
-        const response = await this.listSiriStopsListGetRaw(requestParameters, initOverrides);
+    async siriStopsListGet(requestParameters: SiriStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriStopPydanticModel>> {
+        const response = await this.siriStopsListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single siri vehicle location based on id
+     * Get 
+     */
+    async siriVehicleLocationsGetGetRaw(requestParameters: SiriVehicleLocationsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SiriVehicleLocationPydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling siriVehicleLocationsGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/siri_vehicle_locations/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SiriVehicleLocationPydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single siri vehicle location based on id
+     * Get 
+     */
+    async siriVehicleLocationsGetGet(requestParameters: SiriVehicleLocationsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SiriVehicleLocationPydanticModel> {
+        const response = await this.siriVehicleLocationsGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -842,7 +842,7 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri vehicle locations.
      * List 
      */
-    async listSiriVehicleLocationsListGetRaw(requestParameters: ListSiriVehicleLocationsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriVehicleLocationWithRelatedPydanticModel>>> {
+    async siriVehicleLocationsListGetRaw(requestParameters: SiriVehicleLocationsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SiriVehicleLocationWithRelatedPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -944,8 +944,8 @@ export class SiriApi extends runtime.BaseAPI {
      * List of siri vehicle locations.
      * List 
      */
-    async listSiriVehicleLocationsListGet(requestParameters: ListSiriVehicleLocationsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriVehicleLocationWithRelatedPydanticModel>> {
-        const response = await this.listSiriVehicleLocationsListGetRaw(requestParameters, initOverrides);
+    async siriVehicleLocationsListGet(requestParameters: SiriVehicleLocationsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SiriVehicleLocationWithRelatedPydanticModel>> {
+        const response = await this.siriVehicleLocationsListGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -20,7 +20,7 @@ try {
   console.log("🚀 Generating client code...");
 
   execSync(
-    "openapi-generator-cli generate -g typescript-fetch -i openapi.json -o ./client -c config.json --template-dir openapi-templates/typescript-fetch",
+    "openapi-generator-cli generate -g typescript-fetch -i openapi.json -o ./client -c config.json --template-dir openapi-templates/typescript-fetch --remove-operation-id-prefix",
     { cwd: rootDir, stdio: "inherit" },
   );
 } catch (error) {
@@ -38,6 +38,7 @@ await rimraf([
   "client/.openapi-generator-ignore",
   "client/.npmignore",
   "client/git_push.sh",
+  "*.log",
 ]);
 
 // Update client package.json with version and metadata
