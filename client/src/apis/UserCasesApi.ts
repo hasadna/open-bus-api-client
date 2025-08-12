@@ -31,7 +31,7 @@ import {
     StopArrivalPydanticModelToJSON,
 } from '../models/index';
 
-export interface ListRidesExecutionListGetRequest {
+export interface RidesExecutionListGetRequest {
     dateFrom: Date;
     dateTo: Date;
     limit?: number;
@@ -41,7 +41,7 @@ export interface ListRidesExecutionListGetRequest {
     lineRef?: number;
 }
 
-export interface ListRouteTimetableListGetRequest {
+export interface RouteTimetableListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -50,7 +50,7 @@ export interface ListRouteTimetableListGetRequest {
     lineRefs?: string;
 }
 
-export interface ListStopArrivalsListGetRequest {
+export interface StopArrivalsListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -67,18 +67,18 @@ export class UserCasesApi extends runtime.BaseAPI {
      * List of A comparison between the planned and actual rides of a specific route between the given dates. Currently, the \"actual_rides_count\", will be either None (no actual ride) or equal to the \"planned_rides_count.
      * List 
      */
-    async listRidesExecutionListGetRaw(requestParameters: ListRidesExecutionListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RideExecutionPydanticModel>>> {
+    async ridesExecutionListGetRaw(requestParameters: RidesExecutionListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RideExecutionPydanticModel>>> {
         if (requestParameters['dateFrom'] == null) {
             throw new runtime.RequiredError(
                 'dateFrom',
-                'Required parameter "dateFrom" was null or undefined when calling listRidesExecutionListGet().'
+                'Required parameter "dateFrom" was null or undefined when calling ridesExecutionListGet().'
             );
         }
 
         if (requestParameters['dateTo'] == null) {
             throw new runtime.RequiredError(
                 'dateTo',
-                'Required parameter "dateTo" was null or undefined when calling listRidesExecutionListGet().'
+                'Required parameter "dateTo" was null or undefined when calling ridesExecutionListGet().'
             );
         }
 
@@ -131,8 +131,8 @@ export class UserCasesApi extends runtime.BaseAPI {
      * List of A comparison between the planned and actual rides of a specific route between the given dates. Currently, the \"actual_rides_count\", will be either None (no actual ride) or equal to the \"planned_rides_count.
      * List 
      */
-    async listRidesExecutionListGet(requestParameters: ListRidesExecutionListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RideExecutionPydanticModel>> {
-        const response = await this.listRidesExecutionListGetRaw(requestParameters, initOverrides);
+    async ridesExecutionListGet(requestParameters: RidesExecutionListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RideExecutionPydanticModel>> {
+        const response = await this.ridesExecutionListGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -140,7 +140,7 @@ export class UserCasesApi extends runtime.BaseAPI {
      * List of the stops timetable of a given bus. Currently, only planned time (gtfs) is returned for every stop.
      * List 
      */
-    async listRouteTimetableListGetRaw(requestParameters: ListRouteTimetableListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RouteTimetablePydanticModel>>> {
+    async routeTimetableListGetRaw(requestParameters: RouteTimetableListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RouteTimetablePydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -186,8 +186,8 @@ export class UserCasesApi extends runtime.BaseAPI {
      * List of the stops timetable of a given bus. Currently, only planned time (gtfs) is returned for every stop.
      * List 
      */
-    async listRouteTimetableListGet(requestParameters: ListRouteTimetableListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RouteTimetablePydanticModel>> {
-        const response = await this.listRouteTimetableListGetRaw(requestParameters, initOverrides);
+    async routeTimetableListGet(requestParameters: RouteTimetableListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<RouteTimetablePydanticModel>> {
+        const response = await this.routeTimetableListGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -195,7 +195,7 @@ export class UserCasesApi extends runtime.BaseAPI {
      * List of the actual arrival times to a specific stop. Currently, only planned time (gtfs) is returned for every stop.
      * List 
      */
-    async listStopArrivalsListGetRaw(requestParameters: ListStopArrivalsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<StopArrivalPydanticModel>>> {
+    async stopArrivalsListGetRaw(requestParameters: StopArrivalsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<StopArrivalPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -237,8 +237,8 @@ export class UserCasesApi extends runtime.BaseAPI {
      * List of the actual arrival times to a specific stop. Currently, only planned time (gtfs) is returned for every stop.
      * List 
      */
-    async listStopArrivalsListGet(requestParameters: ListStopArrivalsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<StopArrivalPydanticModel>> {
-        const response = await this.listStopArrivalsListGetRaw(requestParameters, initOverrides);
+    async stopArrivalsListGet(requestParameters: StopArrivalsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<StopArrivalPydanticModel>> {
+        const response = await this.stopArrivalsListGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

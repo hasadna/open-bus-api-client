@@ -28,7 +28,7 @@ import {
     ErrorResponseModelToJSON,
 } from '../models/index';
 
-export interface CreateIssuePostOperationRequest {
+export interface IssuePostRequest {
     createIssuePostRequest: CreateIssuePostRequest;
 }
 
@@ -45,11 +45,11 @@ export class IssuesApi extends runtime.BaseAPI {
      * Creates a new GitHub issue with the provided information
      * Create a GitHub issue
      */
-    async createIssuePostRaw(requestParameters: CreateIssuePostOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateIssuePost200Response>> {
+    async issuePostRaw(requestParameters: IssuePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateIssuePost200Response>> {
         if (requestParameters['createIssuePostRequest'] == null) {
             throw new runtime.RequiredError(
                 'createIssuePostRequest',
-                'Required parameter "createIssuePostRequest" was null or undefined when calling createIssuePost().'
+                'Required parameter "createIssuePostRequest" was null or undefined when calling issuePost().'
             );
         }
 
@@ -77,8 +77,8 @@ export class IssuesApi extends runtime.BaseAPI {
      * Creates a new GitHub issue with the provided information
      * Create a GitHub issue
      */
-    async createIssuePost(requestParameters: CreateIssuePostOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateIssuePost200Response> {
-        const response = await this.createIssuePostRaw(requestParameters, initOverrides);
+    async issuePost(requestParameters: IssuePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateIssuePost200Response> {
+        const response = await this.issuePostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

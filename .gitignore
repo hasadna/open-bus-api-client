@@ -8,6 +8,7 @@ client/package-lock.json
 client/.openapi-generator-ignore
 client/docs/
 client/git_push.sh
+*.log
 
 # npm artifacts
 .npmrc
@@ -15,5 +16,3 @@ client/git_push.sh
 
 # Download files
 openapi.json
-backend-api.json
-stride-api.json

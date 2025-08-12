@@ -43,30 +43,18 @@ import {
     HTTPValidationErrorToJSON,
 } from '../models/index';
 
-export interface GetGtfsRideStopsGetGetRequest {
-    id: number;
-}
-
-export interface GetGtfsRidesGetGetRequest {
-    id: number;
-}
-
-export interface GetGtfsRoutesGetGetRequest {
-    id: number;
-}
-
-export interface GetGtfsStopsGetGetRequest {
-    id: number;
-}
-
-export interface ListGtfsAgenciesListGetRequest {
+export interface GtfsAgenciesListGetRequest {
     limit?: number;
     offset?: number;
     dateFrom?: Date;
     dateTo?: Date;
 }
 
-export interface ListGtfsRideStopsListGetRequest {
+export interface GtfsRideStopsGetGetRequest {
+    id: number;
+}
+
+export interface GtfsRideStopsListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -96,7 +84,11 @@ export interface ListGtfsRideStopsListGetRequest {
     orderBy?: string;
 }
 
-export interface ListGtfsRidesListGetRequest {
+export interface GtfsRidesGetGetRequest {
+    id: number;
+}
+
+export interface GtfsRidesListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -118,7 +110,11 @@ export interface ListGtfsRidesListGetRequest {
     orderBy?: string;
 }
 
-export interface ListGtfsRoutesListGetRequest {
+export interface GtfsRoutesGetGetRequest {
+    id: number;
+}
+
+export interface GtfsRoutesListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -136,7 +132,11 @@ export interface ListGtfsRoutesListGetRequest {
     orderBy?: string;
 }
 
-export interface ListGtfsStopsListGetRequest {
+export interface GtfsStopsGetGetRequest {
+    id: number;
+}
+
+export interface GtfsStopsListGetRequest {
     limit?: number;
     offset?: number;
     getCount?: boolean;
@@ -152,178 +152,10 @@ export interface ListGtfsStopsListGetRequest {
 export class GtfsApi extends runtime.BaseAPI {
 
     /**
-     * Return a single gtfs ride stop based on id
-     * Get 
-     */
-    async getGtfsRideStopsGetGetRaw(requestParameters: GetGtfsRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsRideStopPydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getGtfsRideStopsGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/gtfs_ride_stops/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsRideStopPydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single gtfs ride stop based on id
-     * Get 
-     */
-    async getGtfsRideStopsGetGet(requestParameters: GetGtfsRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsRideStopPydanticModel> {
-        const response = await this.getGtfsRideStopsGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single gtfs ride based on id
-     * Get 
-     */
-    async getGtfsRidesGetGetRaw(requestParameters: GetGtfsRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsRidePydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getGtfsRidesGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/gtfs_rides/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsRidePydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single gtfs ride based on id
-     * Get 
-     */
-    async getGtfsRidesGetGet(requestParameters: GetGtfsRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsRidePydanticModel> {
-        const response = await this.getGtfsRidesGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single gtfs route based on id
-     * Get 
-     */
-    async getGtfsRoutesGetGetRaw(requestParameters: GetGtfsRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsRoutePydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getGtfsRoutesGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/gtfs_routes/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsRoutePydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single gtfs route based on id
-     * Get 
-     */
-    async getGtfsRoutesGetGet(requestParameters: GetGtfsRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsRoutePydanticModel> {
-        const response = await this.getGtfsRoutesGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Return a single gtfs stop based on id
-     * Get 
-     */
-    async getGtfsStopsGetGetRaw(requestParameters: GetGtfsStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsStopPydanticModel>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getGtfsStopsGetGet().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-
-        let urlPath = `/gtfs_stops/get`;
-
-        const response = await this.request({
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsStopPydanticModelFromJSON(jsonValue));
-    }
-
-    /**
-     * Return a single gtfs stop based on id
-     * Get 
-     */
-    async getGtfsStopsGetGet(requestParameters: GetGtfsStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsStopPydanticModel> {
-        const response = await this.getGtfsStopsGetGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * List of gtfs agencies.
      * List 
      */
-    async listGtfsAgenciesListGetRaw(requestParameters: ListGtfsAgenciesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsAgencyPydanticModel>>> {
+    async gtfsAgenciesListGetRaw(requestParameters: GtfsAgenciesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsAgencyPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -361,8 +193,50 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs agencies.
      * List 
      */
-    async listGtfsAgenciesListGet(requestParameters: ListGtfsAgenciesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsAgencyPydanticModel>> {
-        const response = await this.listGtfsAgenciesListGetRaw(requestParameters, initOverrides);
+    async gtfsAgenciesListGet(requestParameters: GtfsAgenciesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsAgencyPydanticModel>> {
+        const response = await this.gtfsAgenciesListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single gtfs ride stop based on id
+     * Get 
+     */
+    async gtfsRideStopsGetGetRaw(requestParameters: GtfsRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsRideStopPydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling gtfsRideStopsGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/gtfs_ride_stops/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsRideStopPydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single gtfs ride stop based on id
+     * Get 
+     */
+    async gtfsRideStopsGetGet(requestParameters: GtfsRideStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsRideStopPydanticModel> {
+        const response = await this.gtfsRideStopsGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -370,7 +244,7 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs ride stops.  Due to large number of items in the table, you must filter the results by at least one of the following:  1. gtfs_ride_ids - containing a single gtfs ride id. 2. arrival_time_from and arrival_time_to - containing a time range.  Additional filters can be applied in addition to one of the above options to narrow down the results.
      * List 
      */
-    async listGtfsRideStopsListGetRaw(requestParameters: ListGtfsRideStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRideStopWithRelatedPydanticModel>>> {
+    async gtfsRideStopsListGetRaw(requestParameters: GtfsRideStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRideStopWithRelatedPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -500,8 +374,50 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs ride stops.  Due to large number of items in the table, you must filter the results by at least one of the following:  1. gtfs_ride_ids - containing a single gtfs ride id. 2. arrival_time_from and arrival_time_to - containing a time range.  Additional filters can be applied in addition to one of the above options to narrow down the results.
      * List 
      */
-    async listGtfsRideStopsListGet(requestParameters: ListGtfsRideStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRideStopWithRelatedPydanticModel>> {
-        const response = await this.listGtfsRideStopsListGetRaw(requestParameters, initOverrides);
+    async gtfsRideStopsListGet(requestParameters: GtfsRideStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRideStopWithRelatedPydanticModel>> {
+        const response = await this.gtfsRideStopsListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single gtfs ride based on id
+     * Get 
+     */
+    async gtfsRidesGetGetRaw(requestParameters: GtfsRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsRidePydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling gtfsRidesGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/gtfs_rides/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsRidePydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single gtfs ride based on id
+     * Get 
+     */
+    async gtfsRidesGetGet(requestParameters: GtfsRidesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsRidePydanticModel> {
+        const response = await this.gtfsRidesGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -509,7 +425,7 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs rides.
      * List 
      */
-    async listGtfsRidesListGetRaw(requestParameters: ListGtfsRidesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRideWithRelatedPydanticModel>>> {
+    async gtfsRidesListGetRaw(requestParameters: GtfsRidesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRideWithRelatedPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -607,8 +523,50 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs rides.
      * List 
      */
-    async listGtfsRidesListGet(requestParameters: ListGtfsRidesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRideWithRelatedPydanticModel>> {
-        const response = await this.listGtfsRidesListGetRaw(requestParameters, initOverrides);
+    async gtfsRidesListGet(requestParameters: GtfsRidesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRideWithRelatedPydanticModel>> {
+        const response = await this.gtfsRidesListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single gtfs route based on id
+     * Get 
+     */
+    async gtfsRoutesGetGetRaw(requestParameters: GtfsRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsRoutePydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling gtfsRoutesGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/gtfs_routes/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsRoutePydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single gtfs route based on id
+     * Get 
+     */
+    async gtfsRoutesGetGet(requestParameters: GtfsRoutesGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsRoutePydanticModel> {
+        const response = await this.gtfsRoutesGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -616,7 +574,7 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs routes.
      * List 
      */
-    async listGtfsRoutesListGetRaw(requestParameters: ListGtfsRoutesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRoutePydanticModel>>> {
+    async gtfsRoutesListGetRaw(requestParameters: GtfsRoutesListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRoutePydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -698,8 +656,50 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs routes.
      * List 
      */
-    async listGtfsRoutesListGet(requestParameters: ListGtfsRoutesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRoutePydanticModel>> {
-        const response = await this.listGtfsRoutesListGetRaw(requestParameters, initOverrides);
+    async gtfsRoutesListGet(requestParameters: GtfsRoutesListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRoutePydanticModel>> {
+        const response = await this.gtfsRoutesListGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Return a single gtfs stop based on id
+     * Get 
+     */
+    async gtfsStopsGetGetRaw(requestParameters: GtfsStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GtfsStopPydanticModel>> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling gtfsStopsGetGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['id'] != null) {
+            queryParameters['id'] = requestParameters['id'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/gtfs_stops/get`;
+
+        const response = await this.request({
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GtfsStopPydanticModelFromJSON(jsonValue));
+    }
+
+    /**
+     * Return a single gtfs stop based on id
+     * Get 
+     */
+    async gtfsStopsGetGet(requestParameters: GtfsStopsGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GtfsStopPydanticModel> {
+        const response = await this.gtfsStopsGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -707,7 +707,7 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs stops.
      * List 
      */
-    async listGtfsStopsListGetRaw(requestParameters: ListGtfsStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsStopPydanticModel>>> {
+    async gtfsStopsListGetRaw(requestParameters: GtfsStopsListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsStopPydanticModel>>> {
         const queryParameters: any = {};
 
         if (requestParameters['limit'] != null) {
@@ -757,8 +757,8 @@ export class GtfsApi extends runtime.BaseAPI {
      * List of gtfs stops.
      * List 
      */
-    async listGtfsStopsListGet(requestParameters: ListGtfsStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsStopPydanticModel>> {
-        const response = await this.listGtfsStopsListGetRaw(requestParameters, initOverrides);
+    async gtfsStopsListGet(requestParameters: GtfsStopsListGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsStopPydanticModel>> {
+        const response = await this.gtfsStopsListGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

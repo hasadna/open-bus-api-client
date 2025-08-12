@@ -28,7 +28,7 @@ import {
     HTTPValidationErrorToJSON,
 } from '../models/index';
 
-export interface GroupByGtfsRidesAggGroupByGetRequest {
+export interface ByGtfsRidesAggGroupByGetRequest {
     dateFrom: Date;
     dateTo: Date;
     groupBy: string;
@@ -36,7 +36,7 @@ export interface GroupByGtfsRidesAggGroupByGetRequest {
     excludeHoursTo?: number;
 }
 
-export interface ListGtfsRidesAggListGetRequest {
+export interface GtfsRidesAggListGetRequest {
     dateFrom: Date;
     dateTo: Date;
     limit?: number;
@@ -55,25 +55,25 @@ export class AggregationsApi extends runtime.BaseAPI {
      * gtfs rides aggregation grouped by given fields.
      * Group By 
      */
-    async groupByGtfsRidesAggGroupByGetRaw(requestParameters: GroupByGtfsRidesAggGroupByGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRidesAggGroupByPydanticModel>>> {
+    async byGtfsRidesAggGroupByGetRaw(requestParameters: ByGtfsRidesAggGroupByGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRidesAggGroupByPydanticModel>>> {
         if (requestParameters['dateFrom'] == null) {
             throw new runtime.RequiredError(
                 'dateFrom',
-                'Required parameter "dateFrom" was null or undefined when calling groupByGtfsRidesAggGroupByGet().'
+                'Required parameter "dateFrom" was null or undefined when calling byGtfsRidesAggGroupByGet().'
             );
         }
 
         if (requestParameters['dateTo'] == null) {
             throw new runtime.RequiredError(
                 'dateTo',
-                'Required parameter "dateTo" was null or undefined when calling groupByGtfsRidesAggGroupByGet().'
+                'Required parameter "dateTo" was null or undefined when calling byGtfsRidesAggGroupByGet().'
             );
         }
 
         if (requestParameters['groupBy'] == null) {
             throw new runtime.RequiredError(
                 'groupBy',
-                'Required parameter "groupBy" was null or undefined when calling groupByGtfsRidesAggGroupByGet().'
+                'Required parameter "groupBy" was null or undefined when calling byGtfsRidesAggGroupByGet().'
             );
         }
 
@@ -118,8 +118,8 @@ export class AggregationsApi extends runtime.BaseAPI {
      * gtfs rides aggregation grouped by given fields.
      * Group By 
      */
-    async groupByGtfsRidesAggGroupByGet(requestParameters: GroupByGtfsRidesAggGroupByGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRidesAggGroupByPydanticModel>> {
-        const response = await this.groupByGtfsRidesAggGroupByGetRaw(requestParameters, initOverrides);
+    async byGtfsRidesAggGroupByGet(requestParameters: ByGtfsRidesAggGroupByGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRidesAggGroupByPydanticModel>> {
+        const response = await this.byGtfsRidesAggGroupByGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -127,18 +127,18 @@ export class AggregationsApi extends runtime.BaseAPI {
      * List of gtfs rides aggregations.
      * List 
      */
-    async listGtfsRidesAggListGetRaw(requestParameters: ListGtfsRidesAggListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRidesAggPydanticModel>>> {
+    async gtfsRidesAggListGetRaw(requestParameters: GtfsRidesAggListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GtfsRidesAggPydanticModel>>> {
         if (requestParameters['dateFrom'] == null) {
             throw new runtime.RequiredError(
                 'dateFrom',
-                'Required parameter "dateFrom" was null or undefined when calling listGtfsRidesAggListGet().'
+                'Required parameter "dateFrom" was null or undefined when calling gtfsRidesAggListGet().'
             );
         }
 
         if (requestParameters['dateTo'] == null) {
             throw new runtime.RequiredError(
                 'dateTo',
-                'Required parameter "dateTo" was null or undefined when calling listGtfsRidesAggListGet().'
+                'Required parameter "dateTo" was null or undefined when calling gtfsRidesAggListGet().'
             );
         }
 
@@ -191,8 +191,8 @@ export class AggregationsApi extends runtime.BaseAPI {
      * List of gtfs rides aggregations.
      * List 
      */
-    async listGtfsRidesAggListGet(requestParameters: ListGtfsRidesAggListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRidesAggPydanticModel>> {
-        const response = await this.listGtfsRidesAggListGetRaw(requestParameters, initOverrides);
+    async gtfsRidesAggListGet(requestParameters: GtfsRidesAggListGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GtfsRidesAggPydanticModel>> {
+        const response = await this.gtfsRidesAggListGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
