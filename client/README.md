@@ -10,9 +10,10 @@ A TypeScript client library for interacting with the Open-Bus API.
 
 ## 🔗 Related Projects
 
-* [🗺️ Open Bus Map Search (Client App)](https://github.com/hasadna/open-bus-map-search) - [Live Website](https://open-bus-map-search.hasadna.org.il/dashboard)
-* [📦 Open Bus API Client (API Package Generator)](https://github.com/hasadna/open-bus-api-client)
-* [🌐 Open Bus Stride API (REST)](https://github.com/hasadna/open-bus-stride-api) – [API Docs](https://open-bus-stride-api.hasadna.org.il/docs)
+- [🗺️ Open Bus Map Search (Client App)](https://github.com/hasadna/open-bus-map-search) - [Live Website](https://open-bus-map-search.hasadna.org.il/dashboard)
+- [📦 Open Bus API Client (API Package Generator)](https://github.com/hasadna/open-bus-api-client)
+- [🌐 Open Bus Stride API (REST)](https://github.com/hasadna/open-bus-stride-api) – [API Docs](https://open-bus-stride-api.hasadna.org.il/docs)
+- [🌐 Open Bus Backend (REST)](https://github.com/hasadna/open-bus-backend) – [API Docs](https://open-bus-backend.k8s.hasadna.org.il/docs)
 
 ## 📦 Installation
 
@@ -23,11 +24,28 @@ npm install @hasadna/open-bus-api-client
 ## 🔧 Usage
 
 ```ts
-import { Client } from "@hasadna/open-bus-api-client";
+import {
+  AggregationsApi,
+  ComplaintsApi,
+  GovernmentTransportationAPIApi,
+  GtfsApi,
+  HealthApi,
+  IssuesApi,
+  SiriApi,
+} from "@hasadna/open-bus-api-client";
 
-const client = new Client();
+// URL: https://open-bus-stride-api.hasadna.org.il
+const Aggregations = AggregationsApi("URL");
+const Gtfs = GtfsApi("URL");
+const Siri = SiriApi("URL");
 
-const stops = await client.getBusStops(...);
+// URL: https://open-bus-backend.k8s.hasadna.org.il
+const Health = HealthApi("URL");
+const Issues = IssuesApi("URL");
+const Complaints = ComplaintsApi("URL");
+const GovernmentTransportationAPI = GovernmentTransportationAPIApi("URL");
+
+const stops = await Gtfs.getBusStops();
 
 console.log(stops);
 ```

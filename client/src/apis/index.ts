@@ -2,7 +2,7 @@
 /* eslint-disable */
 export * from './AggregationsApi';
 export * from './ComplaintsApi';
-export * from './GovernmentTransportationAPIApi';
+export * from './GovernmentTransportationApi';
 export * from './GtfsApi';
 export * from './HealthApi';
 export * from './IssuesApi';

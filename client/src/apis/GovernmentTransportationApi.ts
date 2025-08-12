@@ -77,7 +77,7 @@ export interface GovTrainStationsPostOperationRequest {
 /**
  * 
  */
-export class GovernmentTransportationAPIApi extends runtime.BaseAPI {
+export class GovernmentTransportationApi extends runtime.BaseAPI {
 
     /**
      * Retrieve list of cities
