@@ -1,0 +1,7 @@
+{
+  "inputs": [
+    { "inputURL": "https://open-bus-stride-api.hasadna.org.il/openapi.json" },
+    { "inputURL": "http://127.0.0.1:3001/docs/json" }
+  ],
+  "output": "./openapi.json"
+}

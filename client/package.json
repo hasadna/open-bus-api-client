@@ -21,11 +21,13 @@
   },
   "homepage": "https://github.com/hasadna/open-bus-api-client#readme",
   "keywords": [
-    "axios",
     "api",
-    "open-bus",
-    "client",
-    "openapi-generator"
+    "transportation",
+    "israel",
+    "mot",
+    "transportation-planning",
+    "openapi-generator",
+    "open-bus"
   ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
