@@ -8,15 +8,11 @@ on:
         required: false
         type: choice
         options:
-          - test-workflow # Test Generate client, Skip publish
-          - test-repository # Test Generate client, Skip publish
+          - test # Test Generate client, Skip publish
           - skip # No version bump, but still publish
           - patch # For bug fixes
           - minor # For new features that are backward compatible
           - major # For changes that break backward compatibility
-
-  repository_dispatch:
-    types: [generate-client]
 
 permissions:
   contents: write
@@ -36,35 +32,16 @@ jobs:
           scope: "@hasadna"
 
       - name: Set up Node.js environment
-        id: classify
+        id: settings
         run: |
           FRAGMENT_TYPE="${{ github.event.inputs.semver-fragment }}"
-          if [ -z "$FRAGMENT_TYPE" ]; then
-          FRAGMENT_TYPE="${{ github.event.client_payload.semver-fragment }}"
-          fi
-
-          TEST_TYPE=""
-          case "$FRAGMENT_TYPE" in
-            test-workflow)
-              echo "This is a test workflow run, skipping version bump and publish."
-              FRAGMENT_TYPE="test"
-              TEST_TYPE="workflow"
-              ;;
-            test-repository)
-              echo "This is a test repository dispatch run, skipping version bump and publish."
-              FRAGMENT_TYPE="test"
-              TEST_TYPE="repository"
-              ;;
-          esac
-              
           if [[ "$FRAGMENT_TYPE" != "test" && "$FRAGMENT_TYPE" != "skip" && "$FRAGMENT_TYPE" != "patch" && "$FRAGMENT_TYPE" != "minor" && "$FRAGMENT_TYPE" != "major" ]]; then
             echo "Invalid semver fragment: $FRAGMENT_TYPE"
             exit 1
           fi
-              
+
           echo "Final semver fragment: $FRAGMENT_TYPE"
           echo "fragment=$FRAGMENT_TYPE" >> "$GITHUB_OUTPUT"
-          echo "test=$TEST_TYPE" >> "$GITHUB_OUTPUT"
 
       - name: Get current version from package.json
         id: get-version
@@ -79,15 +56,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
           current-version: ${{ steps.get-version.outputs.version }}
-          version-fragment: ${{ steps.classify.outputs.fragment }}
+          version-fragment: ${{ steps.settings.outputs.fragment == 'test' && 'patch' || steps.settings.outputs.fragment }}
 
       - name: Set new version in package.json
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip'
         run: |
           NEW_VERSION=${{ steps.version.outputs.next-version }}
           node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
@@ -96,49 +73,10 @@ jobs:
         run: npm install
 
       - name: Download Json Schem
-        if: github.event_name == 'workflow_dispatch' || steps.classify.outputs.test == 'workflow'
         run: |
           npm run download
           if [ ! -f openapi.json ]; then
             echo "OpenAPI JSON not found after download"
-            exit 1
-          fi
-
-      - name: Setup Python
-        if: github.event_name == 'repository_dispatch' || steps.classify.outputs.test == 'repository'
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.8"
-
-      - name: Clone open-bus-stride-api and Download JSON Schema
-        if: github.event_name == 'repository_dispatch' || steps.classify.outputs.test == 'repository'
-        run: |
-          git clone https://github.com/hasadna/open-bus-stride-api.git tmp/open-bus-stride-api
-          git clone https://github.com/hasadna/open-bus-stride-db.git tmp/open-bus-stride-db
-
-          cd tmp/open-bus-stride-api
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -r ../open-bus-stride-db/requirements.txt
-          pip install -e ../open-bus-stride-db
-
-          SHA=$(git log -1 --format=%H)
-          echo "VERSION = '$SHA'" > open_bus_stride_api/version.py
-
-          uvicorn open_bus_stride_api.main:app --host 0.0.0.0 --port 8000 &
-
-          sleep 5
-
-          cd ../../
-
-          curl -L http://localhost:8000/openapi.json -o openapi.json
-
-          rm -rf tmp
-
-          if [ ! -f openapi.json ]; then
-            echo "Failed to download OpenAPI JSON"
             exit 1
           fi
 
@@ -152,13 +90,13 @@ jobs:
           path: client
 
       - name: Publish to npm
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
         run: npm run publish
         env:
+          DRY_RUN: ${{ steps.settings.outputs.fragment == 'test' }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit and push regenerated client
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -169,7 +107,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create and push Git tag
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
         run: |
           TAG="v${{ steps.version.outputs.next-version }}"
           git tag "$TAG"

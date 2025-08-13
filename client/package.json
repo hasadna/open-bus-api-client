@@ -5,7 +5,7 @@
   "author": "hasadna",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hasadna/open-bus-api-client.git"
+    "url": "git+https://github.com/hasadna/open-bus-api-client.git"
   },
   "license": "MIT",
   "main": "./dist/index.js",
@@ -21,11 +21,13 @@
   },
   "homepage": "https://github.com/hasadna/open-bus-api-client#readme",
   "keywords": [
-    "axios",
     "api",
-    "open-bus",
-    "client",
-    "openapi-generator"
+    "transportation",
+    "israel",
+    "mot",
+    "transportation-planning",
+    "openapi-generator",
+    "open-bus"
   ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

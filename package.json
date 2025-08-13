@@ -6,24 +6,27 @@
   "homepage": "https://github.com/hasadna/open-bus-api-client#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hasadna/open-bus-api-client.git"
+    "url": "git+https://github.com/hasadna/open-bus-api-client.git"
   },
   "license": "MIT",
   "author": "hasadna",
   "keywords": [
-    "axios",
     "api",
-    "open-bus",
-    "client",
-    "openapi-generator"
+    "transportation",
+    "israel",
+    "mot",
+    "transportation-planning",
+    "openapi-generator",
+    "open-bus"
   ],
   "scripts": {
-    "download": "curl -L https://open-bus-stride-api.hasadna.org.il/openapi.json -o openapi.json",
+    "download": "node scripts/download.js",
     "generate": "node scripts/generate.js",
     "publish": "node scripts/publish.js"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.21.4",
+    "openapi-merge-cli": "^1.3.2",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1"
   },
