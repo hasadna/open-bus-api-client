@@ -6,7 +6,7 @@
   "homepage": "https://github.com/hasadna/open-bus-api-client#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hasadna/open-bus-api-client.git"
+    "url": "git+https://github.com/hasadna/open-bus-api-client.git"
   },
   "license": "MIT",
   "author": "hasadna",

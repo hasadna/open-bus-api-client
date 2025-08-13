@@ -56,15 +56,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version
-        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
           current-version: ${{ steps.get-version.outputs.version }}
-          version-fragment: ${{ steps.settings.outputs.fragment }}
+          version-fragment: ${{ steps.settings.outputs.fragment == 'test' && 'minor' || steps.settings.outputs.fragment }}
 
       - name: Set new version in package.json
-        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip'
         run: |
           NEW_VERSION=${{ steps.version.outputs.next-version }}
           node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"

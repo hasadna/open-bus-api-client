@@ -5,7 +5,7 @@
   "author": "hasadna",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hasadna/open-bus-api-client.git"
+    "url": "git+https://github.com/hasadna/open-bus-api-client.git"
   },
   "license": "MIT",
   "main": "./dist/index.js",
