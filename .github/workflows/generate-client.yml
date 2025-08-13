@@ -32,7 +32,7 @@ jobs:
           scope: "@hasadna"
 
       - name: Set up Node.js environment
-        id: classify
+        id: settings
         run: |
           FRAGMENT_TYPE="${{ github.event.inputs.semver-fragment }}"
           if [[ "$FRAGMENT_TYPE" != "test" && "$FRAGMENT_TYPE" != "skip" && "$FRAGMENT_TYPE" != "patch" && "$FRAGMENT_TYPE" != "minor" && "$FRAGMENT_TYPE" != "major" ]]; then
@@ -56,15 +56,15 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Bump version
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
         id: version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
           current-version: ${{ steps.get-version.outputs.version }}
-          version-fragment: ${{ steps.classify.outputs.fragment }}
+          version-fragment: ${{ steps.settings.outputs.fragment }}
 
       - name: Set new version in package.json
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
         run: |
           NEW_VERSION=${{ steps.version.outputs.next-version }}
           node -e "let p=require('./package.json'); p.version='${NEW_VERSION}'; require('fs').writeFileSync('./package.json', JSON.stringify(p, null, 2) + '\n')"
@@ -90,13 +90,13 @@ jobs:
           path: client
 
       - name: Publish to npm
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
         run: npm run publish
         env:
+          DRY_RUN: ${{ steps.settings.outputs.fragment == 'test' }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit and push regenerated client
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -107,7 +107,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create and push Git tag
-        if: steps.classify.outputs.fragment != 'skip' && steps.classify.outputs.fragment != 'test'
+        if: steps.settings.outputs.fragment != 'skip' && steps.settings.outputs.fragment != 'test'
         run: |
           TAG="v${{ steps.version.outputs.next-version }}"
           git tag "$TAG"
