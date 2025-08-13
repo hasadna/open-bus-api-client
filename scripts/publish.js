@@ -45,9 +45,11 @@ writeFileSync(npmrcPath, npmrcContent);
 
 // Publish the package
 try {
-  console.log("📦 Publishing npm package...");
+  const dryRun = process.env.DRY_RUN == "true";
+  console.log(`📦 Publishing${dryRun ? " (Dry Run)" : ""} npm package...`);
+
   execSync(
-    process.env.DRY_RUN
+    dryRun
       ? "npm publish --dry-run"
       : "npm publish --access public --tag latest",
     {
