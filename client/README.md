@@ -27,7 +27,7 @@ npm install @hasadna/open-bus-api-client
 import {
   AggregationsApi,
   ComplaintsApi,
-  GovernmentTransportationAPIApi,
+  GovernmentTransportationApi,
   GtfsApi,
   HealthApi,
   IssuesApi,
@@ -43,7 +43,7 @@ const Siri = SiriApi("URL");
 const Health = HealthApi("URL");
 const Issues = IssuesApi("URL");
 const Complaints = ComplaintsApi("URL");
-const GovernmentTransportationAPI = GovernmentTransportationAPIApi("URL");
+const GovernmentTransportation = GovernmentTransportationApi("URL");
 
 const stops = await Gtfs.getBusStops();
 
