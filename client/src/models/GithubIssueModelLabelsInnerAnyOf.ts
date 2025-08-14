@@ -13,69 +13,101 @@
  */
 
 import { mapValues } from '../runtime';
-import type { GithubIssueModel } from './GithubIssueModel';
-import {
-    GithubIssueModelFromJSON,
-    GithubIssueModelFromJSONTyped,
-    GithubIssueModelToJSON,
-    GithubIssueModelToJSONTyped,
-} from './GithubIssueModel';
-
 /**
  * 
  * @export
- * @interface CreateIssuePost200Response
+ * @interface GithubIssueModelLabelsInnerAnyOf
  */
-export interface CreateIssuePost200Response {
+export interface GithubIssueModelLabelsInnerAnyOf {
+    /**
+     * 
+     * @type {number}
+     * @memberof GithubIssueModelLabelsInnerAnyOf
+     */
+    id?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInnerAnyOf
+     */
+    nodeId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInnerAnyOf
+     */
+    url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInnerAnyOf
+     */
+    name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInnerAnyOf
+     */
+    description?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInnerAnyOf
+     */
+    color?: string | null;
     /**
      * 
      * @type {boolean}
-     * @memberof CreateIssuePost200Response
+     * @memberof GithubIssueModelLabelsInnerAnyOf
      */
-    success?: boolean;
-    /**
-     * 
-     * @type {GithubIssueModel}
-     * @memberof CreateIssuePost200Response
-     */
-    data?: GithubIssueModel;
+    _default?: boolean;
 }
 
 /**
- * Check if a given object implements the CreateIssuePost200Response interface.
+ * Check if a given object implements the GithubIssueModelLabelsInnerAnyOf interface.
  */
-export function instanceOfCreateIssuePost200Response(value: object): value is CreateIssuePost200Response {
+export function instanceOfGithubIssueModelLabelsInnerAnyOf(value: object): value is GithubIssueModelLabelsInnerAnyOf {
     return true;
 }
 
-export function CreateIssuePost200ResponseFromJSON(json: any): CreateIssuePost200Response {
-    return CreateIssuePost200ResponseFromJSONTyped(json, false);
+export function GithubIssueModelLabelsInnerAnyOfFromJSON(json: any): GithubIssueModelLabelsInnerAnyOf {
+    return GithubIssueModelLabelsInnerAnyOfFromJSONTyped(json, false);
 }
 
-export function CreateIssuePost200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateIssuePost200Response {
+export function GithubIssueModelLabelsInnerAnyOfFromJSONTyped(json: any, ignoreDiscriminator: boolean): GithubIssueModelLabelsInnerAnyOf {
     if (json == null) {
         return json;
     }
     return {
         
-        'success': json['success'] == null ? undefined : json['success'],
-        'data': json['data'] == null ? undefined : GithubIssueModelFromJSON(json['data']),
+        'id': json['id'] == null ? undefined : json['id'],
+        'nodeId': json['node_id'] == null ? undefined : json['node_id'],
+        'url': json['url'] == null ? undefined : json['url'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'color': json['color'] == null ? undefined : json['color'],
+        '_default': json['default'] == null ? undefined : json['default'],
     };
 }
 
-export function CreateIssuePost200ResponseToJSON(json: any): CreateIssuePost200Response {
-    return CreateIssuePost200ResponseToJSONTyped(json, false);
+export function GithubIssueModelLabelsInnerAnyOfToJSON(json: any): GithubIssueModelLabelsInnerAnyOf {
+    return GithubIssueModelLabelsInnerAnyOfToJSONTyped(json, false);
 }
 
-export function CreateIssuePost200ResponseToJSONTyped(value?: CreateIssuePost200Response | null, ignoreDiscriminator: boolean = false): any {
+export function GithubIssueModelLabelsInnerAnyOfToJSONTyped(value?: GithubIssueModelLabelsInnerAnyOf | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'success': value['success'],
-        'data': GithubIssueModelToJSON(value['data']),
+        'id': value['id'],
+        'node_id': value['nodeId'],
+        'url': value['url'],
+        'name': value['name'],
+        'description': value['description'],
+        'color': value['color'],
+        'default': value['_default'],
     };
 }
 

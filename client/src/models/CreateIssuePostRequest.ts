@@ -72,13 +72,13 @@ export interface CreateIssuePostRequest {
      * @type {string}
      * @memberof CreateIssuePostRequest
      */
-    reproducibility: string;
+    reproducibility: CreateIssuePostRequestReproducibilityEnum;
     /**
-     * Optional attachments (file URLs)
-     * @type {Array<string>}
+     * 
+     * @type {Array<object>}
      * @memberof CreateIssuePostRequest
      */
-    attachments?: Array<string>;
+    attachments?: Array<object>;
 }
 
 
@@ -91,6 +91,17 @@ export const CreateIssuePostRequestTypeEnum = {
     Other: 'other'
 } as const;
 export type CreateIssuePostRequestTypeEnum = typeof CreateIssuePostRequestTypeEnum[keyof typeof CreateIssuePostRequestTypeEnum];
+
+/**
+ * @export
+ */
+export const CreateIssuePostRequestReproducibilityEnum = {
+    Always: 'always',
+    Sometimes: 'sometimes',
+    Rarely: 'rarely',
+    Once: 'once'
+} as const;
+export type CreateIssuePostRequestReproducibilityEnum = typeof CreateIssuePostRequestReproducibilityEnum[keyof typeof CreateIssuePostRequestReproducibilityEnum];
 
 
 /**

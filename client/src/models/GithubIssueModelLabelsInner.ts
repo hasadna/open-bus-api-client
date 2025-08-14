@@ -13,60 +13,96 @@
  */
 
 import { mapValues } from '../runtime';
+import type { GithubIssueModelLabelsInnerAnyOf } from './GithubIssueModelLabelsInnerAnyOf';
+import {
+    GithubIssueModelLabelsInnerAnyOfFromJSON,
+    GithubIssueModelLabelsInnerAnyOfFromJSONTyped,
+    GithubIssueModelLabelsInnerAnyOfToJSON,
+    GithubIssueModelLabelsInnerAnyOfToJSONTyped,
+} from './GithubIssueModelLabelsInnerAnyOf';
+
 /**
  * 
  * @export
- * @interface CreateIssuePost200ResponseDataLabelsInner
+ * @interface GithubIssueModelLabelsInner
  */
-export interface CreateIssuePost200ResponseDataLabelsInner {
+export interface GithubIssueModelLabelsInner {
     /**
      * 
      * @type {number}
-     * @memberof CreateIssuePost200ResponseDataLabelsInner
+     * @memberof GithubIssueModelLabelsInner
      */
     id?: number;
     /**
      * 
      * @type {string}
-     * @memberof CreateIssuePost200ResponseDataLabelsInner
+     * @memberof GithubIssueModelLabelsInner
+     */
+    nodeId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInner
+     */
+    url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInner
      */
     name?: string;
     /**
      * 
      * @type {string}
-     * @memberof CreateIssuePost200ResponseDataLabelsInner
+     * @memberof GithubIssueModelLabelsInner
      */
-    color?: string;
+    description?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelLabelsInner
+     */
+    color?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GithubIssueModelLabelsInner
+     */
+    _default?: boolean;
 }
 
 /**
- * Check if a given object implements the CreateIssuePost200ResponseDataLabelsInner interface.
+ * Check if a given object implements the GithubIssueModelLabelsInner interface.
  */
-export function instanceOfCreateIssuePost200ResponseDataLabelsInner(value: object): value is CreateIssuePost200ResponseDataLabelsInner {
+export function instanceOfGithubIssueModelLabelsInner(value: object): value is GithubIssueModelLabelsInner {
     return true;
 }
 
-export function CreateIssuePost200ResponseDataLabelsInnerFromJSON(json: any): CreateIssuePost200ResponseDataLabelsInner {
-    return CreateIssuePost200ResponseDataLabelsInnerFromJSONTyped(json, false);
+export function GithubIssueModelLabelsInnerFromJSON(json: any): GithubIssueModelLabelsInner {
+    return GithubIssueModelLabelsInnerFromJSONTyped(json, false);
 }
 
-export function CreateIssuePost200ResponseDataLabelsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateIssuePost200ResponseDataLabelsInner {
+export function GithubIssueModelLabelsInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): GithubIssueModelLabelsInner {
     if (json == null) {
         return json;
     }
     return {
         
         'id': json['id'] == null ? undefined : json['id'],
+        'nodeId': json['node_id'] == null ? undefined : json['node_id'],
+        'url': json['url'] == null ? undefined : json['url'],
         'name': json['name'] == null ? undefined : json['name'],
+        'description': json['description'] == null ? undefined : json['description'],
         'color': json['color'] == null ? undefined : json['color'],
+        '_default': json['default'] == null ? undefined : json['default'],
     };
 }
 
-export function CreateIssuePost200ResponseDataLabelsInnerToJSON(json: any): CreateIssuePost200ResponseDataLabelsInner {
-    return CreateIssuePost200ResponseDataLabelsInnerToJSONTyped(json, false);
+export function GithubIssueModelLabelsInnerToJSON(json: any): GithubIssueModelLabelsInner {
+    return GithubIssueModelLabelsInnerToJSONTyped(json, false);
 }
 
-export function CreateIssuePost200ResponseDataLabelsInnerToJSONTyped(value?: CreateIssuePost200ResponseDataLabelsInner | null, ignoreDiscriminator: boolean = false): any {
+export function GithubIssueModelLabelsInnerToJSONTyped(value?: GithubIssueModelLabelsInner | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
@@ -74,8 +110,12 @@ export function CreateIssuePost200ResponseDataLabelsInnerToJSONTyped(value?: Cre
     return {
         
         'id': value['id'],
+        'node_id': value['nodeId'],
+        'url': value['url'],
         'name': value['name'],
+        'description': value['description'],
         'color': value['color'],
+        'default': value['_default'],
     };
 }
 

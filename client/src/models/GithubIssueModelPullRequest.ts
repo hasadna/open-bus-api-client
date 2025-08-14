@@ -13,69 +13,89 @@
  */
 
 import { mapValues } from '../runtime';
-import type { GithubIssueModel } from './GithubIssueModel';
-import {
-    GithubIssueModelFromJSON,
-    GithubIssueModelFromJSONTyped,
-    GithubIssueModelToJSON,
-    GithubIssueModelToJSONTyped,
-} from './GithubIssueModel';
-
 /**
  * 
  * @export
- * @interface CreateIssuePost200Response
+ * @interface GithubIssueModelPullRequest
  */
-export interface CreateIssuePost200Response {
+export interface GithubIssueModelPullRequest {
     /**
      * 
-     * @type {boolean}
-     * @memberof CreateIssuePost200Response
+     * @type {Date}
+     * @memberof GithubIssueModelPullRequest
      */
-    success?: boolean;
+    mergedAt?: Date | null;
     /**
      * 
-     * @type {GithubIssueModel}
-     * @memberof CreateIssuePost200Response
+     * @type {string}
+     * @memberof GithubIssueModelPullRequest
      */
-    data?: GithubIssueModel;
+    diffUrl: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelPullRequest
+     */
+    htmlUrl: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelPullRequest
+     */
+    patchUrl: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GithubIssueModelPullRequest
+     */
+    url: string | null;
 }
 
 /**
- * Check if a given object implements the CreateIssuePost200Response interface.
+ * Check if a given object implements the GithubIssueModelPullRequest interface.
  */
-export function instanceOfCreateIssuePost200Response(value: object): value is CreateIssuePost200Response {
+export function instanceOfGithubIssueModelPullRequest(value: object): value is GithubIssueModelPullRequest {
+    if (!('diffUrl' in value) || value['diffUrl'] === undefined) return false;
+    if (!('htmlUrl' in value) || value['htmlUrl'] === undefined) return false;
+    if (!('patchUrl' in value) || value['patchUrl'] === undefined) return false;
+    if (!('url' in value) || value['url'] === undefined) return false;
     return true;
 }
 
-export function CreateIssuePost200ResponseFromJSON(json: any): CreateIssuePost200Response {
-    return CreateIssuePost200ResponseFromJSONTyped(json, false);
+export function GithubIssueModelPullRequestFromJSON(json: any): GithubIssueModelPullRequest {
+    return GithubIssueModelPullRequestFromJSONTyped(json, false);
 }
 
-export function CreateIssuePost200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateIssuePost200Response {
+export function GithubIssueModelPullRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): GithubIssueModelPullRequest {
     if (json == null) {
         return json;
     }
     return {
         
-        'success': json['success'] == null ? undefined : json['success'],
-        'data': json['data'] == null ? undefined : GithubIssueModelFromJSON(json['data']),
+        'mergedAt': json['merged_at'] == null ? undefined : (new Date(json['merged_at'])),
+        'diffUrl': json['diff_url'],
+        'htmlUrl': json['html_url'],
+        'patchUrl': json['patch_url'],
+        'url': json['url'],
     };
 }
 
-export function CreateIssuePost200ResponseToJSON(json: any): CreateIssuePost200Response {
-    return CreateIssuePost200ResponseToJSONTyped(json, false);
+export function GithubIssueModelPullRequestToJSON(json: any): GithubIssueModelPullRequest {
+    return GithubIssueModelPullRequestToJSONTyped(json, false);
 }
 
-export function CreateIssuePost200ResponseToJSONTyped(value?: CreateIssuePost200Response | null, ignoreDiscriminator: boolean = false): any {
+export function GithubIssueModelPullRequestToJSONTyped(value?: GithubIssueModelPullRequest | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
 
     return {
         
-        'success': value['success'],
-        'data': GithubIssueModelToJSON(value['data']),
+        'merged_at': value['mergedAt'] === null ? null : ((value['mergedAt'] as any)?.toISOString()),
+        'diff_url': value['diffUrl'],
+        'html_url': value['htmlUrl'],
+        'patch_url': value['patchUrl'],
+        'url': value['url'],
     };
 }
 
