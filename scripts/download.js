@@ -28,7 +28,7 @@ try {
   for (const key in json.components.schemas) {
     if (key.startsWith("def-")) {
       const title = json.components.schemas[key].title;
-      file = file.replaceAll(key, title);
+      file = file.replaceAll(`${key}"`, `${title}"`);
       updated = true;
       console.log(`✏️ Replaced "${key}" with "${title}".`);
     }
