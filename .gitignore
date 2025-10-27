@@ -3,11 +3,7 @@ dist/
 node_modules/
 
 # OpenAPI generator artifacts
-client/.openapi-generator/
-client/package-lock.json
-client/.openapi-generator-ignore
-client/docs/
-client/git_push.sh
+client/
 *.log
 
 # npm artifacts

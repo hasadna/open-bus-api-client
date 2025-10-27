@@ -61,11 +61,11 @@ try {
 
   // Clean up
   console.log("🧹 Cleaning up...");
-  rimraf(["client/dist", "client/.npmrc"]);
+  rimraf(["client/"]);
 
   console.log("✅ Package published successfully.");
 } catch (error) {
-  rimraf("client/.npmrc");
+  rimraf("client/");
   console.error("❌ Failed to publish package:", error.message);
   process.exit(1);
 }

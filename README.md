@@ -51,25 +51,34 @@ npm run publish
 import {
   AggregationsApi,
   ComplaintsApi,
+  Configuration,
   GovernmentTransportationApi,
   GtfsApi,
   HealthApi,
   IssuesApi,
   SiriApi,
-} from "@hasadna/open-bus-api-client";
+  UserCasesApi,
+} from '@hasadna/open-bus-api-client'
 
 // URL: https://open-bus-stride-api.hasadna.org.il
-const Aggregations = AggregationsApi("URL");
-const Gtfs = GtfsApi("URL");
-const Siri = SiriApi("URL");
+export const STRIDE_API_BASE_PATH = process.env.VITE_STRIDE_API
+const STRIDE_API_CONFIG = new Configuration({ basePath: STRIDE_API_BASE_PATH })
+
+export const AGGREGATIONS_API = new AggregationsApi(STRIDE_API_CONFIG)
+export const GTFS_API = new GtfsApi(STRIDE_API_CONFIG)
+export const SIRI_API = new SiriApi(STRIDE_API_CONFIG)
+export const USER_CASE_API = new UserCasesApi(STRIDE_API_CONFIG)
 
 // URL: https://open-bus-backend.k8s.hasadna.org.il
-const Health = HealthApi("URL");
-const Issues = IssuesApi("URL");
-const Complaints = ComplaintsApi("URL");
-const GovernmentTransportation = GovernmentTransportationApi("URL");
+const BACKEND_API_BASE_PATH = process.env.VITE_BACKEND_API
+const BACKEND_API_CONFIG = new Configuration({ basePath: BACKEND_API_BASE_PATH })
 
-const stops = await Gtfs.getBusStops();
+export const HEALTH_API = new HealthApi(BACKEND_API_CONFIG)
+export const ISSUES_API = new IssuesApi(BACKEND_API_CONFIG)
+export const COMPLAINTS_API = new ComplaintsApi(BACKEND_API_CONFIG)
+export const GOVERNMENT_TRANSPORTATION_API = new GovernmentTransportationApi(BACKEND_API_CONFIG)
+
+const stops = await GTFS_API.gtfsRideStopsListGet(...)
 
 console.log(stops);
 ```
@@ -78,7 +87,6 @@ console.log(stops);
 
 ```bash
 .
-├── client/                # Generated client code
 ├── openapi-templates/     # README templets
 ├── scripts/               # Custom JS scripts
 ├── config.json            # Open-API generator config
