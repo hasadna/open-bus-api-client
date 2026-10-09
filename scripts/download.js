@@ -2,6 +2,7 @@ import { execSync } from "child_process";
 import { readFile, writeFile } from "fs/promises";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import { normalizeSpec } from "./normalize.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, "..");
@@ -32,6 +33,12 @@ try {
       updated = true;
       console.log(`✏️ Replaced "${key}" with "${title}".`);
     }
+  }
+
+  const normalized = JSON.parse(file);
+  if (normalizeSpec(normalized)) {
+    file = JSON.stringify(normalized, null, 2) + "\n";
+    updated = true;
   }
 
   if (updated) {

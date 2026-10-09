@@ -3,6 +3,7 @@ import { existsSync, readFileSync, writeFileSync } from "fs";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { rimraf } from "rimraf";
+import { normalizeSpec } from "./normalize.js";
 
 // Clean up old gneratore directory
 const clientDir = resolve("client");
@@ -16,6 +17,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = resolve(__dirname, "..");
 
 try {
+  const specPath = resolve(rootDir, "openapi.json");
+  const spec = JSON.parse(readFileSync(specPath, "utf-8"));
+  if (normalizeSpec(spec)) {
+    writeFileSync(specPath, JSON.stringify(spec, null, 2) + "\n");
+  }
+
   // Generate client code
   console.log("🚀 Generating client code...");
 
