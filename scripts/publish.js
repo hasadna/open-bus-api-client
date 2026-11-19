@@ -1,5 +1,6 @@
 import { execSync } from "child_process";
 import { existsSync, writeFileSync } from "fs";
+import { rm } from "fs/promises";
 import { resolve } from "path";
 import { rimraf } from "rimraf";
 
@@ -30,42 +31,33 @@ try {
   process.exit(1);
 }
 
-// Create .npmrc file for authentication
-console.log("📝 Creating .npmrc file for authentication...");
-
-const npmrcPath = resolve("client/.npmrc");
-
+const npmrcPath = resolve(clientDir, ".npmrc");
 const npmrcContent = [
   "@hasadna:registry=https://registry.npmjs.org/",
-  `//registry.npmjs.org/:_authToken=${process.env.NODE_AUTH_TOKEN}`,
+  "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}",
   "",
 ].join("\n");
 
-writeFileSync(npmrcPath, npmrcContent);
-
-// Publish the package
+let createdConfig = false;
+const dryRun = process.env.DRY_RUN === "true";
 try {
-  const dryRun = process.env.DRY_RUN == "true";
-  console.log(`📦 Publishing${dryRun ? " (Dry Run)" : ""} npm package...`);
-
+  writeFileSync(npmrcPath, npmrcContent, { flag: "wx" });
+  createdConfig = true;
+  console.log(dryRun ? "Running npm publish dry run..." : "Publishing npm package...");
   execSync(
-    dryRun
-      ? "npm publish --dry-run"
-      : "npm publish --access public --tag latest",
-    {
-      cwd: clientDir,
-      stdio: "inherit",
-      env: { ...process.env, NODE_AUTH_TOKEN: process.env.NODE_AUTH_TOKEN },
-    },
+    dryRun ? "npm publish --dry-run" : "npm publish --access public --tag latest",
+    { cwd: clientDir, stdio: "inherit" },
   );
-
-  // Clean up
-  console.log("🧹 Cleaning up...");
-  rimraf(["client/"]);
-
-  console.log("✅ Package published successfully.");
 } catch (error) {
-  rimraf("client/");
-  console.error("❌ Failed to publish package:", error.message);
-  process.exit(1);
+  console.error("Failed to publish package:", error.message);
+  process.exitCode = 1;
+} finally {
+  if (createdConfig) {
+    await rm(npmrcPath, { force: true });
+    await rimraf(clientDir);
+  }
+}
+
+if (!process.exitCode) {
+  console.log(dryRun ? "Publish dry run completed." : "Package published successfully.");
 }
